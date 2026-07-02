@@ -3,1801 +3,1016 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diszipliniert satt — Kodierung von 30 „What I Eat In A Day“-Videos</title>
+<title>Disziplin, Ernährung, Körper — Codebook-Browser</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450;1,9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#181A14;
-    --bg-soft:#20231b;
-    --paper:#F3EEDF;
-    --paper-dim:#e8e1cd;
-    --ink:#1B1D17;
-    --cream:#EDE7D6;
-    --cream-dim:#c9c3ab;
-    --clay:#C1662E;
-    --clay-dim:#8a4a22;
-    --sage:#8C9B76;
-    --mustard:#D9A441;
-    --line:rgba(237,231,214,0.14);
-    --line-strong:rgba(237,231,214,0.28);
-    --shadow: 0 18px 40px -18px rgba(0,0,0,0.55);
-    --radius: 3px;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--cream);
-    font-family:'Inter',system-ui,sans-serif;
-    font-size:16px;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{ background:var(--clay); color:var(--paper); }
-  h1,h2,h3,h4{
-    font-family:'Fraunces',serif;
-    font-weight:450;
-    margin:0;
-    color:var(--paper);
-  }
-  a{color:inherit;}
-  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    text-transform:uppercase;
-    letter-spacing:0.14em;
-    font-size:0.72rem;
-    color:var(--mustard);
-    display:flex;
-    align-items:center;
-    gap:0.6em;
-  }
-  .eyebrow::before{
-    content:"";
-    width:22px; height:1px;
-    background:var(--mustard);
-    display:inline-block;
-  }
-  .wrap{
-    max-width:1180px;
-    margin:0 auto;
-    padding:0 32px;
-  }
-  @media(max-width:700px){ .wrap{padding:0 18px;} }
+:root{
+  --paper:#f1ede2;
+  --paper-alt:#e9e3d2;
+  --card-bg:#faf8f1;
+  --ink:#211f1a;
+  --ink-soft:#5b584e;
+  --ink-faint:#8c887a;
+  --line:#d6cfba;
+  --line-strong:#b9b199;
+  --focus:#1c5c86;
 
-  /* ---------- NAV ---------- */
-  nav{
-    position:sticky; top:0; z-index:50;
-    background:rgba(24,26,20,0.88);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  nav .wrap{
-    display:flex; align-items:center; justify-content:space-between;
-    height:60px;
-  }
-  .nav-brand{
-    font-family:'Fraunces',serif; font-style:italic; font-weight:450;
-    font-size:1.05rem; color:var(--paper);
-  }
-  .nav-links{ display:flex; gap:28px; list-style:none; margin:0; padding:0; }
-  .nav-links a{
-    font-size:0.82rem; text-decoration:none; color:var(--cream-dim);
-    font-family:'IBM Plex Mono',monospace;
-    letter-spacing:0.03em;
-    transition:color .2s;
-  }
-  .nav-links a:hover{ color:var(--mustard); }
-  @media(max-width:700px){ .nav-links{ gap:14px; } .nav-links span{display:none;} }
+  --type-0:#8d897c;
+  --type-1:#2c6e68;
+  --type-2:#b4842c;
+  --type-3:#6c4d8c;
+  --type-4:#a4543a;
+  --type-5:#748f68;
 
-  /* ---------- HERO ---------- */
-  header.hero{
-    padding:88px 0 60px;
-    position:relative;
-    overflow:hidden;
-    border-bottom:1px solid var(--line);
-  }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.1fr 0.9fr;
-    gap:56px;
-    align-items:center;
-  }
-  @media(max-width:900px){ .hero-grid{ grid-template-columns:1fr; gap:40px; } }
-  .hero h1{
-    font-size:clamp(2.3rem, 4.6vw, 3.6rem);
-    line-height:1.06;
-    letter-spacing:-0.01em;
-  }
-  .hero h1 em{
-    font-style:italic; color:var(--clay);
-    font-weight:450;
-  }
-  .hero p.lede{
-    margin-top:22px;
-    max-width:46ch;
-    color:var(--cream-dim);
-    font-size:1.05rem;
-  }
-  .hero-meta{
-    display:flex; gap:28px; margin-top:34px; flex-wrap:wrap;
-  }
-  .hero-meta div{ min-width:90px; }
-  .hero-meta .num{
-    font-family:'Fraunces',serif; font-size:2rem; color:var(--paper);
-    display:block; line-height:1;
-  }
-  .hero-meta .lbl{
-    font-family:'IBM Plex Mono',monospace; font-size:0.68rem;
-    color:var(--cream-dim); text-transform:uppercase; letter-spacing:0.08em;
-    display:block; margin-top:6px;
-  }
+  --font-display:'Fraunces', serif;
+  --font-sans:'Inter', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
 
-  /* Fingerprint signature visual */
-  .fingerprint{
-    background:var(--bg-soft);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:18px 18px 14px;
-  }
-  .fingerprint-head{
-    display:flex; justify-content:space-between; align-items:baseline;
-    margin-bottom:12px;
-  }
-  .fingerprint-head span{ font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--cream-dim); text-transform:uppercase; letter-spacing:0.08em;}
-  #fingerprint-rows{ display:flex; flex-direction:column; gap:3px; }
-  .fp-row{ display:flex; gap:2px; cursor:pointer; }
-  .fp-cell{
-    height:7px; border-radius:1px;
-    background:var(--sage);
-    flex:0 0 auto;
-    transition:transform .15s, filter .15s;
-  }
-  .fp-row:hover .fp-cell{ filter:brightness(1.25); }
-  .fp-row:hover{ transform:translateX(2px); }
-  .fingerprint-foot{
-    display:flex; justify-content:space-between; margin-top:12px;
-    font-family:'IBM Plex Mono',monospace; font-size:0.62rem; color:var(--cream-dim);
-  }
-  .fp-legend{ display:flex; gap:14px; align-items:center;}
-  .fp-legend i{ display:inline-block; width:9px;height:9px;border-radius:1px;margin-right:5px; vertical-align:-1px;}
+  --radius:3px;
+}
 
-  /* ---------- SECTION HEADERS ---------- */
-  section{ padding:76px 0; border-bottom:1px solid var(--line); }
-  section:last-of-type{ border-bottom:none; }
-  .sec-head{ max-width:640px; margin-bottom:44px; }
-  .sec-head h2{ font-size:clamp(1.7rem,3vw,2.3rem); margin-top:10px; }
-  .sec-head p{ color:var(--cream-dim); margin-top:12px; font-size:0.98rem;}
+*{box-sizing:border-box;}
 
-  /* ---------- ABOUT / INTRO PROSE ---------- */
-  .intro-cols{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:8px;}
-  @media(max-width:800px){ .intro-cols{grid-template-columns:1fr;} }
-  .intro-cols .card{
-    background:var(--bg-soft); border:1px solid var(--line); padding:22px 22px 24px;
-    border-radius:var(--radius);
-  }
-  .intro-cols .card .num{ font-family:'IBM Plex Mono',monospace; color:var(--mustard); font-size:0.78rem; }
-  .intro-cols .card h3{ font-size:1.15rem; margin-top:10px; color:var(--paper); font-weight:450;}
-  .intro-cols .card p{ color:var(--cream-dim); font-size:0.92rem; margin-top:8px;}
+html{background:var(--paper);}
 
-  /* ---------- CODEBOOK ---------- */
-  .codebook-grid{
-    display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
-    background:var(--line);
-    border:1px solid var(--line);
-  }
-  @media(max-width:800px){ .codebook-grid{grid-template-columns:1fr;} }
-  .cb-item{ background:var(--bg); padding:22px 26px; }
-  .cb-item h4{
-    font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:0.78rem;
-    color:var(--mustard); text-transform:uppercase; letter-spacing:0.05em;
-    margin-bottom:10px;
-  }
-  .cb-item ul{ margin:0; padding:0; list-style:none; }
-  .cb-item li{
-    font-size:0.86rem; color:var(--cream-dim); padding:5px 0;
-    border-top:1px dashed var(--line);
-    display:flex; gap:10px;
-  }
-  .cb-item li:first-child{ border-top:none; }
-  .cb-item li b{
-    font-family:'IBM Plex Mono',monospace; color:var(--paper); flex:0 0 auto;
-    min-width:1.6em;
-  }
+body{
+  margin:0;
+  font-family:var(--font-sans);
+  color:var(--ink);
+  background:var(--paper);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
 
-  /* ---------- OVERVIEW CHARTS ---------- */
-  .chart-grid{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:22px;
-  }
-  @media(max-width:900px){ .chart-grid{grid-template-columns:repeat(2,1fr);} }
-  @media(max-width:600px){ .chart-grid{grid-template-columns:1fr;} }
-  .chart-card{
-    background:var(--bg-soft); border:1px solid var(--line); border-radius:var(--radius);
-    padding:20px 20px 10px;
-  }
-  .chart-card h4{
-    font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:0.74rem;
-    color:var(--cream-dim); text-transform:uppercase; letter-spacing:0.06em;
-    margin-bottom:14px;
-  }
-  .chart-card canvas{ max-height:190px; }
+a{color:inherit;}
 
-  /* ---------- ARCHIVE ---------- */
-  .archive-controls{
-    display:flex; flex-wrap:wrap; gap:10px; margin-bottom:30px; align-items:center;
-  }
-  .filter-btn{
-    font-family:'IBM Plex Mono',monospace; font-size:0.74rem;
-    background:transparent; border:1px solid var(--line-strong);
-    color:var(--cream-dim); padding:7px 13px; border-radius:20px; cursor:pointer;
-    transition:all .15s;
-  }
-  .filter-btn:hover{ border-color:var(--mustard); color:var(--paper); }
-  .filter-btn.active{ background:var(--clay); border-color:var(--clay); color:var(--paper); }
-  .search-box{
-    margin-left:auto;
-    background:var(--bg-soft); border:1px solid var(--line-strong);
-    border-radius:20px; padding:7px 14px;
-    display:flex; align-items:center; gap:8px;
-  }
-  .search-box input{
-    background:none; border:none; outline:none; color:var(--paper);
-    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; width:170px;
-  }
-  .search-box input::placeholder{ color:var(--cream-dim); }
+::selection{background:var(--ink); color:var(--paper);}
 
-  #archive-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
-    gap:18px;
-  }
-  .case-card{
-    background:var(--paper); color:var(--ink);
-    border-radius:var(--radius);
-    padding:20px 20px 18px;
-    cursor:pointer;
-    box-shadow:var(--shadow);
-    position:relative;
-    transition:transform .18s ease;
-    display:flex; flex-direction:column;
-    border-top:3px solid var(--clay);
-  }
-  .case-card:hover{ transform:translateY(-4px); }
-  .case-card .cc-top{
-    display:flex; justify-content:space-between; align-items:flex-start;
-    margin-bottom:10px;
-  }
-  .case-card .cc-id{
-    font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--clay-dim);
-  }
-  .case-card .cc-rest{
-    font-family:'IBM Plex Mono',monospace; font-size:0.65rem;
-    background:var(--ink); color:var(--paper); padding:2px 7px; border-radius:10px;
-  }
-  .case-card h3{
-    font-size:1.08rem; color:var(--ink); font-weight:450; line-height:1.25;
-    text-transform:lowercase;
-  }
-  .case-card .cc-msg{
-    font-size:0.82rem; color:#5a5645; margin-top:8px; flex:1;
-    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
-  }
-  .cc-portions{ display:flex; gap:3px; margin-top:14px; height:16px; align-items:flex-end; }
-  .cc-portions i{ display:block; width:8px; background:var(--sage); border-radius:1px; }
-  .cc-tags{ display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
-  .cc-tags span{
-    font-family:'IBM Plex Mono',monospace; font-size:0.64rem;
-    border:1px solid var(--clay-dim); color:var(--clay-dim); padding:2px 7px; border-radius:10px;
-  }
+:focus-visible{
+  outline:2px solid var(--focus);
+  outline-offset:2px;
+}
 
-  /* ---------- MODAL ---------- */
-  .modal-overlay{
-    position:fixed; inset:0; background:rgba(10,11,8,0.72);
-    display:none; align-items:flex-start; justify-content:center;
-    z-index:100; padding:40px 20px; overflow-y:auto;
-    backdrop-filter:blur(3px);
-  }
-  .modal-overlay.open{ display:flex; }
-  .modal{
-    background:var(--paper); color:var(--ink);
-    max-width:760px; width:100%; border-radius:4px;
-    padding:40px 44px 46px;
-    position:relative;
-    animation:modalIn .22s ease;
-  }
-  @media(max-width:700px){ .modal{padding:30px 22px 36px;} }
-  @keyframes modalIn{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
-  .modal-close{
-    position:absolute; top:18px; right:18px;
-    background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--ink);
-    font-family:'Fraunces',serif; line-height:1; width:34px;height:34px;
-    border-radius:50%; transition:background .15s;
-  }
-  .modal-close:hover{ background:var(--paper-dim); }
-  .modal .m-eyebrow{
-    font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--clay-dim);
-    text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;
-  }
-  .modal h2{ color:var(--ink); font-size:1.7rem; text-transform:lowercase; max-width:88%;}
-  .modal .m-link{ font-family:'IBM Plex Mono',monospace; font-size:0.76rem; color:var(--clay); text-decoration:none; display:inline-block; margin-top:8px;}
-  .m-block{ margin-top:24px; }
-  .m-block h5{
-    font-family:'IBM Plex Mono',monospace; font-size:0.7rem; text-transform:uppercase;
-    letter-spacing:0.07em; color:#8a836a; margin-bottom:6px;
-  }
-  .m-block p{ font-size:0.95rem; margin:0; color:#2b2820; }
-  .m-quote{
-    border-left:2px solid var(--clay); padding-left:16px; font-style:italic;
-    color:#4a4636; font-family:'Fraunces',serif; font-size:1.02rem;
-  }
-  .m-codes{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-    gap:1px; background:var(--paper-dim); border:1px solid var(--paper-dim); margin-top:10px;
-  }
-  .m-codes div{ background:var(--paper); padding:10px 12px; }
-  .m-codes .k{ font-family:'IBM Plex Mono',monospace; font-size:0.62rem; text-transform:uppercase; color:#8a836a; display:block;}
-  .m-codes .v{ font-family:'IBM Plex Mono',monospace; font-size:0.92rem; color:var(--ink); display:block; margin-top:3px;}
-  .m-portions{ display:flex; gap:6px; margin-top:10px; align-items:flex-end; height:34px;}
-  .m-portions .seg{ text-align:center; }
-  .m-portions .bar{ width:26px; background:var(--sage); border-radius:2px 2px 0 0; margin:0 auto;}
-  .m-portions .lbl{ font-family:'IBM Plex Mono',monospace; font-size:0.58rem; color:#8a836a; margin-top:4px; display:block;}
+button, input, select{
+  font-family:inherit;
+  font-size:inherit;
+  color:inherit;
+}
 
-  /* ---------- FOOTER ---------- */
-  footer{ padding:50px 0 60px; }
-  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; align-items:center;}
-  footer p{ color:var(--cream-dim); font-size:0.82rem; margin:0; }
-  footer .mono{ color:var(--cream-dim); font-size:0.76rem;}
+/* ---------- Header ---------- */
+
+.dossier-header{
+  border-bottom:1px solid var(--line-strong);
+  background:
+    linear-gradient(var(--paper-alt), var(--paper-alt)) padding-box;
+  position:relative;
+}
+.dossier-header::before{
+  content:"";
+  position:absolute;
+  top:6px; left:0; right:0;
+  height:1px;
+  background:var(--line);
+}
+.header-inner{
+  max-width:1400px;
+  margin:0 auto;
+  padding:2.6rem 2rem 2rem;
+}
+.eyebrow{
+  font-family:var(--font-mono);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:.72rem;
+  color:var(--ink-soft);
+  margin:0 0 .9rem;
+}
+.dossier-header h1{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(1.9rem, 3.4vw, 3rem);
+  line-height:1.08;
+  margin:0 0 .8rem;
+  max-width:22ch;
+}
+.lede{
+  max-width:62ch;
+  color:var(--ink-soft);
+  font-size:.98rem;
+  margin:0 0 1.8rem;
+}
+
+.tally-bar{
+  display:flex;
+  height:15px;
+  border-radius:2px;
+  overflow:hidden;
+  border:1px solid var(--line-strong);
+  background:var(--card-bg);
+}
+.tally-segment{
+  height:100%;
+}
+
+.tally-legend{
+  list-style:none;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem 1.4rem;
+  padding:0;
+  margin:.9rem 0 0;
+  font-family:var(--font-mono);
+  font-size:.78rem;
+}
+.tally-legend li{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  color:var(--ink-soft);
+}
+.tally-legend strong{
+  color:var(--ink);
+  font-weight:600;
+}
+.legend-dot{
+  width:9px; height:9px;
+  border-radius:1px;
+  flex:0 0 auto;
+  display:inline-block;
+}
+
+/* ---------- Layout ---------- */
+
+.layout{
+  max-width:1400px;
+  margin:0 auto;
+  padding:2rem;
+  display:grid;
+  grid-template-columns:270px 1fr;
+  gap:2.2rem;
+  align-items:start;
+}
+
+.sidebar{
+  position:sticky;
+  top:1.4rem;
+  display:flex;
+  flex-direction:column;
+  gap:1.6rem;
+  background:var(--card-bg);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:1.3rem;
+}
+
+.field-block label,
+.field-block .field-label{
+  display:block;
+  font-family:var(--font-mono);
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  font-size:.7rem;
+  color:var(--ink-soft);
+  margin-bottom:.55rem;
+}
+
+#searchInput{
+  width:100%;
+  padding:.55rem .65rem;
+  border:1px solid var(--line-strong);
+  border-radius:2px;
+  background:#fff;
+  font-family:var(--font-mono);
+  font-size:.85rem;
+}
+#searchInput::placeholder{color:var(--ink-faint);}
+
+.chip-group{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+}
+
+.chip{
+  font-family:var(--font-mono);
+  font-size:.75rem;
+  padding:.36rem .6rem;
+  border:1px solid var(--line-strong);
+  border-radius:20px;
+  background:#fff;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  transition:background .12s, color .12s, border-color .12s;
+  line-height:1.2;
+}
+.chip .chip-count{
+  color:var(--ink-faint);
+  font-size:.72rem;
+}
+.chip[aria-pressed="true"]{
+  background:var(--ink);
+  color:var(--paper);
+  border-color:var(--ink);
+}
+.chip[aria-pressed="true"] .chip-count{color:var(--paper);}
+.chip .swatch{
+  width:8px;height:8px;border-radius:50%;flex:0 0 auto;
+}
+
+#sortSelect{
+  width:100%;
+  padding:.55rem .6rem;
+  border:1px solid var(--line-strong);
+  border-radius:2px;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23211f1a'/%3E%3C/svg%3E") no-repeat right .7rem center;
+  appearance:none;
+  font-family:var(--font-mono);
+  font-size:.82rem;
+}
+
+.reset-btn{
+  width:100%;
+  padding:.6rem;
+  background:transparent;
+  border:1px solid var(--ink);
+  border-radius:2px;
+  cursor:pointer;
+  font-family:var(--font-mono);
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  transition:background .12s,color .12s;
+}
+.reset-btn:hover{background:var(--ink); color:var(--paper);}
+
+.result-count{
+  margin:0;
+  font-family:var(--font-mono);
+  font-size:.75rem;
+  color:var(--ink-soft);
+}
+
+hr.rule{
+  border:none;
+  border-top:1px solid var(--line);
+  margin:0;
+}
+
+/* ---------- Case grid ---------- */
+
+.case-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+  gap:1.1rem;
+  align-content:start;
+}
+
+.empty-state{
+  grid-column:1/-1;
+  padding:3rem 1rem;
+  text-align:center;
+  color:var(--ink-soft);
+  font-family:var(--font-mono);
+  font-size:.85rem;
+  border:1px dashed var(--line-strong);
+  border-radius:var(--radius);
+}
+
+.case-card{
+  background:var(--card-bg);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:1.1rem 1.15rem 1.2rem;
+  cursor:pointer;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  gap:.8rem;
+  transition:box-shadow .15s, border-color .15s, transform .15s;
+}
+.case-card:hover, .case-card:focus-visible{
+  border-color:var(--line-strong);
+  box-shadow:0 6px 18px -10px rgba(33,31,26,.35);
+  transform:translateY(-1px);
+}
+
+.card-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:.6rem;
+}
+.case-number{
+  font-family:var(--font-display);
+  font-size:1.9rem;
+  font-weight:600;
+  line-height:1;
+  color:var(--ink);
+}
+.case-number span{
+  font-size:.9rem;
+  color:var(--ink-faint);
+  font-weight:400;
+}
+
+.type-badge{
+  font-family:var(--font-mono);
+  font-size:.66rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  padding:.32rem .55rem;
+  border-radius:20px;
+  color:#fff;
+  white-space:nowrap;
+  flex:0 0 auto;
+}
+
+.card-metrics{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.3rem 1rem;
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  color:var(--ink-soft);
+}
+.card-metrics b{
+  color:var(--ink);
+  font-weight:600;
+}
+
+.first-impression{
+  margin:0;
+  font-style:italic;
+  font-size:.92rem;
+  color:var(--ink);
+  border-left:2px solid var(--line-strong);
+  padding-left:.7rem;
+}
+
+.readout{
+  display:flex;
+  flex-direction:column;
+  gap:.4rem;
+  margin-top:auto;
+}
+.readout-row{
+  display:grid;
+  grid-template-columns:78px 1fr;
+  align-items:center;
+  gap:.5rem;
+}
+.readout-label{
+  font-family:var(--font-mono);
+  font-size:.62rem;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  color:var(--ink-soft);
+}
+.segments{
+  display:flex;
+  gap:3px;
+}
+.segment{
+  height:7px;
+  flex:1;
+  background:var(--line);
+  border-radius:1px;
+}
+.segment.filled{background:var(--ink);}
+.segment.empty-scale{background:transparent; border:1px dashed var(--line-strong);}
+
+/* ---------- Modal ---------- */
+
+.modal-overlay{
+  position:fixed; inset:0;
+  background:rgba(20,18,14,.6);
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:3.2rem 1.2rem;
+  overflow-y:auto;
+  z-index:100;
+}
+.modal-overlay[hidden]{display:none;}
+
+.modal{
+  background:var(--paper);
+  border-radius:6px;
+  max-width:760px;
+  width:100%;
+  padding:2rem 2.1rem 2.4rem;
+  position:relative;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.4);
+}
+
+.modal-close{
+  position:absolute;
+  top:1rem; right:1rem;
+  width:34px; height:34px;
+  border-radius:50%;
+  border:1px solid var(--line-strong);
+  background:var(--card-bg);
+  font-size:1.2rem;
+  line-height:1;
+  cursor:pointer;
+}
+
+.modal-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:1.2rem;
+  padding-right:2.6rem;
+}
+.modal-head .case-number{font-size:2.6rem;}
+.modal-meta{
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+  align-items:flex-end;
+}
+
+.modal-metrics{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem 1.1rem;
+  font-family:var(--font-mono);
+  font-size:.76rem;
+  color:var(--ink-soft);
+  margin-bottom:1.4rem;
+}
+.modal-metrics b{color:var(--ink); font-weight:600;}
+
+.video-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  padding:.5rem .8rem;
+  background:var(--ink);
+  color:var(--paper);
+  border-radius:20px;
+  text-decoration:none;
+  font-family:var(--font-mono);
+  font-size:.75rem;
+  border:none;
+  cursor:pointer;
+}
+.video-btn.disabled{
+  background:transparent;
+  color:var(--ink-faint);
+  border:1px dashed var(--line-strong);
+  cursor:default;
+}
+
+.section{
+  margin-top:1.7rem;
+  padding-top:1.2rem;
+  border-top:1px solid var(--line);
+}
+.section h3{
+  font-family:var(--font-mono);
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  font-size:.74rem;
+  color:var(--ink-soft);
+  margin:0 0 .9rem;
+}
+
+.kv{
+  display:flex;
+  flex-direction:column;
+  gap:.9rem;
+}
+.kv-item .kv-label{
+  font-family:var(--font-mono);
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--ink-faint);
+  margin-bottom:.25rem;
+}
+.kv-item .kv-value{
+  font-size:.95rem;
+}
+.kv-item blockquote{
+  margin:0;
+  font-style:italic;
+}
+
+.tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+}
+.tag{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  padding:.28rem .55rem;
+  background:var(--paper-alt);
+  border:1px solid var(--line-strong);
+  border-radius:20px;
+}
+.tag.muted{color:var(--ink-faint); font-style:italic; border-style:dashed;}
+
+.bar-row{
+  display:grid;
+  grid-template-columns:190px 1fr;
+  align-items:center;
+  gap:.8rem;
+  margin-bottom:.6rem;
+}
+.bar-row:last-child{margin-bottom:0;}
+.bar-row .bar-title{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  color:var(--ink-soft);
+}
+.bar-track{
+  display:flex;
+  gap:4px;
+}
+.bar-seg{
+  height:9px;
+  flex:1;
+  background:var(--line);
+  border-radius:1px;
+}
+.bar-seg.filled{background:var(--ink);}
+.bar-caption{
+  font-size:.8rem;
+  margin-top:.15rem;
+  color:var(--ink-soft);
+}
+
+.grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.4rem 2rem;
+}
+
+.transcript-box, .interpretation-box, .raw-box{
+  background:var(--card-bg);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:.9rem 1rem;
+  font-size:.9rem;
+  white-space:pre-wrap;
+}
+.raw-box{
+  font-family:var(--font-mono);
+  font-size:.78rem;
+}
+
+@media (max-width: 900px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{position:static;}
+  .grid-2{grid-template-columns:1fr;}
+  .bar-row{grid-template-columns:140px 1fr;}
+}
+
+@media (max-width: 560px){
+  .header-inner{padding:2rem 1.2rem 1.6rem;}
+  .layout{padding:1.2rem;}
+  .modal{padding:1.5rem 1.2rem 2rem;}
+  .modal-head{flex-direction:column;}
+  .modal-meta{align-items:flex-start;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important; animation:none !important;}
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="wrap">
-    <div class="nav-brand">Diszipliniert satt</div>
-    <ul class="nav-links">
-      <li><a href="#uebersicht"><span>01 · </span>Übersicht</a></li>
-      <li><a href="#codebook"><span>02 · </span>Codebook</a></li>
-      <li><a href="#auswertung"><span>03 · </span>Auswertung</a></li>
-      <li><a href="#archiv"><span>04 · </span>Fallarchiv</a></li>
-    </ul>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="eyebrow">Qualitative Inhaltsanalyse · Bachelorarbeit</div>
-      <h1>Diszipliniert <em>satt.</em></h1>
-      <p class="lede">Eine Kodierung von 30 „What I Eat In A Day“-Videos auf TikTok — danach gefragt, wie Ernährung, Körper und Selbstkontrolle in kurzen Clips verhandelt werden, und welche Formen von Disziplin sich hinter scheinbar beiläufigen Alltagsdarstellungen verbergen.</p>
-      <div class="hero-meta">
-        <div><span class="num" id="stat-videos">30</span><span class="lbl">Videos kodiert</span></div>
-        <div><span class="num" id="stat-vars">23</span><span class="lbl">Kodierte Variablen</span></div>
-        <div><span class="num" id="stat-restrictive">–</span><span class="lbl">Hoher Kontrollgrad</span></div>
-      </div>
-    </div>
-    <div class="fingerprint">
-      <div class="fingerprint-head">
-        <span>Portionsfingerabdruck</span>
-        <span>6 Mahlzeiten × 30 Videos</span>
-      </div>
-      <div id="fingerprint-rows"></div>
-      <div class="fingerprint-foot">
-        <div class="fp-legend">
-          <span><i style="background:var(--sage); opacity:.35"></i>klein</span>
-          <span><i style="background:var(--sage); opacity:.7"></i>mittel</span>
-          <span><i style="background:var(--sage);"></i>groß</span>
-        </div>
-        <span>→ Fall öffnen</span>
-      </div>
-    </div>
+<header class="dossier-header">
+  <div class="header-inner">
+    <p class="eyebrow">Qualitative Inhaltsanalyse · TikTok-Videos</p>
+    <h1>Disziplin-, Ernährungs- und Körpernarrative</h1>
+    <p class="lede">Codebook-Browser zu 30 kodierten TikTok-Fällen. Jede Zahl aus der Kodiertabelle wird in Klartext übersetzt — von Portionsgrößen über Disziplin-Narrative bis zur Körperinszenierung — damit sich die qualitative Kodierung bequem durchstöbern lässt.</p>
+    <div class="tally-bar" id="tallyBar" role="img" aria-label="Verteilung der Typen über alle Fälle"></div>
+    <ul class="tally-legend" id="tallyLegend"></ul>
   </div>
 </header>
 
-<section id="uebersicht">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">01 — Über dieses Projekt</div>
-      <h2>Was hier kodiert wurde</h2>
-      <p>Jedes Video wurde entlang derselben Kategorien gelesen: Was wird gesagt (die Botschaft), was wird tatsächlich gezeigt (Portionen, Struktur, Auswahl), und wie wird der Körper in Szene gesetzt. Aus dem Abgleich dieser Ebenen entsteht die Interpretation je Fall.</p>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="field-block">
+      <label for="searchInput">Volltextsuche</label>
+      <input type="search" id="searchInput" placeholder="Eindruck, Botschaft, Transkript …">
     </div>
-    <div class="intro-cols">
-      <div class="card">
-        <div class="num">Ebene 1</div>
-        <h3>Erzählung</h3>
-        <p>Erster Eindruck und zentrale Botschaft — das, was das Video über sich selbst behauptet.</p>
-      </div>
-      <div class="card">
-        <div class="num">Ebene 2</div>
-        <h3>Ernährungspraxis</h3>
-        <p>Portionsgrößen je Mahlzeit, Ernährungsstruktur, Stil, Grad von Restriktion und Kontrolle — das, was tatsächlich zu sehen ist.</p>
-      </div>
-      <div class="card">
-        <div class="num">Ebene 3</div>
-        <h3>Körper &amp; Inszenierung</h3>
-        <p>Darstellung, Definition, Objektivierungselemente und das Verhältnis zwischen Erzählung und Bild.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section id="codebook">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">02 — Kodierschema</div>
-      <h2>Das Codebook</h2>
-      <p>Die numerischen Werte in jedem Fall beziehen sich auf folgende Skalen. Mehrfachnennungen (z.&nbsp;B. „1,2“) bedeuten, dass mehrere Ausprägungen gleichzeitig erkennbar waren.</p>
+    <div class="field-block">
+      <span class="field-label">Typ-Filter</span>
+      <div class="chip-group" id="typeChips"></div>
     </div>
-    <div class="codebook-grid" id="codebook-grid"></div>
-  </div>
-</section>
 
-<section id="auswertung">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">03 — Auswertung</div>
-      <h2>Verteilungen über den Videokorpus</h2>
-      <p>Aggregierte Häufigkeiten der zentralen Variablen über alle 30 Videos hinweg. Mehrfachkodierungen fließen anteilig in jede zutreffende Kategorie ein.</p>
-    </div>
-    <div class="chart-grid">
-      <div class="chart-card"><h4>Grad der Restriktion</h4><canvas id="chart-restriktion"></canvas></div>
-      <div class="chart-card"><h4>Grad der Kontrolle / Planung</h4><canvas id="chart-kontrolle"></canvas></div>
-      <div class="chart-card"><h4>Ernährungsstil</h4><canvas id="chart-stil"></canvas></div>
-      <div class="chart-card"><h4>Ernährungsstruktur</h4><canvas id="chart-struktur"></canvas></div>
-      <div class="chart-card"><h4>Disziplin-Narrativ</h4><canvas id="chart-disziplin"></canvas></div>
-      <div class="chart-card"><h4>Grad der Inszenierung</h4><canvas id="chart-inszenierung"></canvas></div>
-    </div>
-  </div>
-</section>
+    <hr class="rule">
 
-<section id="archiv">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">04 — Fallarchiv</div>
-      <h2>Alle 30 Fälle</h2>
-      <p>Jede Karte ist ein kodiertes Video. Klicken öffnet die vollständige Fallakte mit Botschaft, Interpretation und allen erhobenen Codes.</p>
+    <div class="field-block">
+      <label for="sortSelect">Sortierung</label>
+      <select id="sortSelect">
+        <option value="id">Fallnummer</option>
+        <option value="restriktion">Grad der Restriktion (hoch → niedrig)</option>
+        <option value="inszenierung">Grad der Inszenierung (stark → authentisch)</option>
+        <option value="reach">Geschätzte Reichweite (hoch → niedrig)</option>
+      </select>
     </div>
-    <div class="archive-controls">
-      <button class="filter-btn active" data-filter="all">Alle</button>
-      <button class="filter-btn" data-filter="0">Restriktion: keine</button>
-      <button class="filter-btn" data-filter="1">Restriktion: gering</button>
-      <button class="filter-btn" data-filter="2">Restriktion: mittel</button>
-      <button class="filter-btn" data-filter="3">Restriktion: stark</button>
-      <div class="search-box">
-        <span class="mono" style="color:var(--cream-dim); font-size:0.78rem;">⌕</span>
-        <input id="search-input" type="text" placeholder="Suche im Archiv…">
-      </div>
-    </div>
-    <div id="archive-grid"></div>
-  </div>
-</section>
 
-<footer>
-  <div class="wrap">
-    <p>Kodiertabelle &amp; Analyse: Sophia Fallah — Bachelorarbeit.</p>
-    <p class="mono">30 TikTok-Videos · Kategorie „What I Eat In A Day“</p>
-  </div>
-</footer>
+    <hr class="rule">
 
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal" id="modal-content"></div>
+    <button class="reset-btn" id="resetBtn" type="button">Filter zurücksetzen</button>
+    <p class="result-count" id="resultCount"></p>
+  </aside>
+
+  <main class="case-grid" id="caseGrid" aria-live="polite"></main>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
-<script type="application/json" id="video-data">
-[
-{
-"videolink": "https://vm.tiktok.com/ZGd9uFNH4/",
-"videonr": 2,
-"views": "1,2 Mio am 23.04.2026",
-"follower": null,
-"gespeichert": null,
-"likes": null,
-"erster_eindruck": "simple but high protein",
-"botschaft": "Das solltest du essen um dünnzu bleiben und um so auszusehen wie ich",
-"vermittelt": null,
-"p_morgens": 2,
-"p_snack1": 1,
-"p_mittag": 1,
-"p_snack2": 2,
-"p_abend": 1,
-"p_snack3": null,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 2,
-"kontrolle": 3,
-"disziplin_narrativ": 3,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 1.2,
-"bauch_definition": 1,
-"objektivierung": "2 (Bauch),3",
-"fitness_kontext": 3,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "to stay lean and hit my protein goals",
-"interpretation": null,
-"id": 1
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9moM4S/",
-"videonr": 3,
-"views": 702495,
-"follower": "722524 am 04.05.2026",
-"gespeichert": null,
-"likes": 51689,
-"erster_eindruck": "High fiber, clean eating for fat loss",
-"botschaft": "Food matters! Was du isst hat viel Einfluss darauf, wie du aussehen wirst und vor allem die richtige Auswahl an Nährstoffen it relevant.",
-"vermittelt": "Es wird eine stark wissenbasierte Ernährung normalisisert. Disziplin zeigt sich hier weniger durch Verzicht oder extreme Einschränkung, sondern durch das „richtige Wissen“ und dessen konsequente Umsetzung.",
-"p_morgens": 2,
-"p_snack1": 1,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 4,
-"gesamtmenge": 2,
-"stil": 2,
-"restriktion": 2,
-"kontrolle": 2,
-"disziplin_narrativ": "1.    2.",
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": "1,2,3,",
-"bauch_definition": 2,
-"objektivierung": 2.3,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "I just wished that someone told me sooner when I wanted to get absolutly shredded, that food matters. Not how much training you are doing or cardio. Healthy food is high on fiber.",
-"interpretation": "Es wird eine wissendisziplinierte Disziplin dargestellt, bei welcher der Körper durch eine gezielte Nährstoffaufnahme gesteuert wird. Disziplin zeigt sich hier weniger durch Verzicht oder extreme Einschränkung, sondern durch das „richtige Wissen“ und dessen konsequente Umsetzung.",
-"id": 2
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9uR6mP/",
-"videonr": 4,
-"views": "1,1 Millionen",
-"follower": 722529,
-"gespeichert": null,
-"likes": 128998,
-"erster_eindruck": "High protein! Fat loss meals",
-"botschaft": "Das Video vermittelt, dass du durch eine Proteinreiche und eine niedrige Kalorienzufuhr einen definierten Körper erreichst, ohne auf Genuss zu verzichten.",
-"vermittelt": "Implizit wird eine stark restriktive und optimierte Ernährungsweise vermittelt, bei der sowohl Kalorien als auch Makronährstoffe gezielt kontrolliert werden. Genuss wird nicht frei gelebt, sondern stark reduziert und umdefiniert (z.B. Dattel als ausreichender Ersatz für Süßes). Die Betonung von „lecker“ dient dazu, die zugrunde liegende Einschränkung zu relativieren.",
-"p_morgens": 2,
-"p_snack1": 0.5,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 1,
-"p_snack3": 1,
-"struktur": 4,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2.3,
-"bauch_definition": 2,
-"objektivierung": "2,3,",
-"fitness_kontext": 3,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "What you eat should be your top priority not what you are eating!I want to help you",
-"interpretation": "Es wird eine Form von optimierter Disziplin, bei der Ernährung präzise gesteuert wird. Die Betonung auf den Geschmack und die Zufriedenheit entproblematisisert die Kontrolle und lässt es einfcah wirken. Implizit wird eine stark restriktive und optimierte Ernährungsweise vermittelt, bei der sowohl Kalorien als auch Makronährstoffe gezielt kontrolliert werden. Genuss wird nicht frei gelebt, sondern stark reduziert und umdefiniert (z.B. Dattel als ausreichender Ersatz für Süßes). Die Betonung von „lecker“ dient dazu, die zugrunde liegende Einschränkung zu relativieren.",
-"id": 3
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9uJkjs/",
-"videonr": 8,
-"views": 2.6,
-"follower": 3.1,
-"gespeichert": 68263,
-"likes": 261.165,
-"erster_eindruck": "High protein! Gain muslcles and stay lean",
-"botschaft": "Das Video vermittelt, dass eine bewusste, proteinreiche Ernährung in Kombination mit Bewegung zu einem gesunden und attraktiven Körper führt und gleichzeitig genussvoll sein kann.",
-"vermittelt": "Die ständige Betonung von Protein und körperlichem Nutzen zeigt, dass Essen primär als Mittel zur Körperoptimierung verstanden wird.",
-"p_morgens": 2,
-"p_snack1": 2,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": null,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 2,
-"kontrolle": 2,
-"disziplin_narrativ": 1,
-"verh_narrativ_restriktion": 2,
-"koerper_inszenierung": 2.3,
-"bauch_definition": 2,
-"objektivierung": "1,2,3",
-"fitness_kontext": 3,
-"verh_narrativ_koerper": null,
-"inszenierung_grad": 1,
-"zitat": "Gain mscles and stay as lean as posssibke.",
-"interpretation": "Das Video inszeniert eine Form von funktionaler Disziplin, bei der Ernährung gezielt nach ihrem Beitrag zur körperlichen Leistungsfähigkeit und Ästhetik ausgewählt wird.",
-"id": 4
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9uLj7o/",
-"videonr": 9,
-"views": 612102,
-"follower": 55538,
-"gespeichert": 7173,
-"likes": 87252,
-"erster_eindruck": "realistic wIeiad",
-"botschaft": "Es werden keine kalorien gezählt, also ein freies Essverhalten wird dargestellt.",
-"vermittelt": "Das Video vermittelt, dass eine gesunde und proteinreiche Ernährung wichtig ist, gleichzeitig aber auch spontane und genussvolle Momente Teil eines ausgewogenen Lebensstils sein können.",
-"p_morgens": 2,
-"p_snack1": 0,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": 0,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 3,
-"restriktion": 1,
-"kontrolle": 1,
-"disziplin_narrativ": 4,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": "2,3,",
-"bauch_definition": "/",
-"objektivierung": 2,
-"fitness_kontext": 3,
-"verh_narrativ_koerper": 2,
-"inszenierung_grad": 3,
-"zitat": null,
-"interpretation": "Grundsätzlich passt das Essverhalten zu der Aussage, dass sie nicht ihre kalorien trackt. Als Kommentar sieht man jedoch: Realistisch was ich an einem tag asl Fitnessgirl gegessen habe. Sie enhält sich also ob es das ist was se auch davor gegessen hat. Im Gegensatz zu den meisten analysierten Videos wird hier kaum eine Form von Disziplin sichtbar, wodurch das Video einen Gegenpol zu den dominanten Mustern darstellt.",
-"id": 5
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9mTHe8/",
-"videonr": 10.5,
-"views": 806020,
-"follower": 349659,
-"gespeichert": 1413,
-"likes": 12392,
-"erster_eindruck": "zero carb diet",
-"botschaft": "Die \"Zero Carb Diet\" ist eine funktionierende und legitime Ernährungsform, unabhängig von gesellschaftlicher Kritik.",
-"vermittelt": "Implizit wird eine hochgradig restriktive und einseitige Ernährungsweise normalisiert, bei der Vielfalt und Genuss vollständig in den Hintergrund treten. Die defensive Aussage („don’t judge“) deutet darauf hin, dass diese Praxis als potenziell kritisch wahrgenommen wird, gleichzeitig aber bewusst legitimiert wird.",
-"p_morgens": 0,
-"p_snack1": 0,
-"p_mittag": 1,
-"p_snack2": 0,
-"p_abend": 1,
-"p_snack3": 0,
-"struktur": 2,
-"gesamtmenge": 1,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 0,
-"objektivierung": 0,
-"fitness_kontext": 1,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "This is my hole diet… Don´t judge!",
-"interpretation": "Das Video stellt eine extreme Form von Ernährungsdisziplin dar, bei der Kontrolle durch maximale Einschränkung und Reduktion umgesetzt wird. Im Gegensatz zu subtileren Darstellungen wird Disziplin hier nicht verschleiert, sondern offen sichtbar. Gleichzeitig deutet die defensive Rahmung darauf hin, dass diese Form der Ernährung außerhalb des als „normal“ Wahrgenommenen liegt. Dadurch fungiert das Video als Grenzfall, der die Spannbreite disziplinierter Ernährungspraktiken aufzeigt und die moderateren, stärker normalisierten Formen von Kontrolle in anderen Videos umso deutlicher macht.",
-"id": 6
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9msowD/",
-"videonr": 11,
-"views": 56593,
-"follower": 248813,
-"gespeichert": 835,
-"likes": 2676,
-"erster_eindruck": "Mini- bulk to building my lower body, while staying lean and building abs - whole foods",
-"botschaft": "Struktirierte proteinreiche Ernährung führt zu einem definierten Körper!",
-"vermittelt": "Normal essen ist funktional, es werden gezielt Regeln befolgt. Zucker wird unsichtbar gemacht und es werden nur \"gute\" lebensmittel gezeigt",
-"p_morgens": 2,
-"p_snack1": 1,
-"p_mittag": 2,
-"p_snack2": null,
-"p_abend": 2,
-"p_snack3": 0,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 2.3,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2.3,
-"bauch_definition": 2,
-"objektivierung": 2.3,
-"fitness_kontext": "1,2,3",
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 3,
-"zitat": null,
-"interpretation": "Die Ernährung wird als ausgewogen dargestellt, folgt jedoch klaren proteinorieniertern Strukturen. Körper wird als klares Ergebnis einer kontrollierten Ernährung dargestellt. Ist selbstverständlicher Bestandteil eines gesunden Lebensstil",
-"id": 7
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9u8KeP/",
-"videonr": 12,
-"views": 40278,
-"follower": 3123,
-"gespeichert": 466,
-"likes": 8751,
-"erster_eindruck": "rest day, fuel, building muscles & no restriction",
-"botschaft": "Man soll aufhören das natürliche Essverlangen zu unterdrücken und auch am Offday nicht zu wenig essen. Trotzdem wird sich auf ausschließlich gesunde Mahlzeiten fokussiert",
-"vermittelt": "Implizit wird eine Form von Disziplin trotzdem aufrecht erhalten, da ausschließlich \"cleane\" Lebensmittel gezeigt werden",
-"p_morgens": 3,
-"p_snack1": 0,
-"p_mittag": 2,
-"p_snack2": 2,
-"p_abend": 1,
-"p_snack3": 1,
-"struktur": 4,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 1,
-"kontrolle": 1,
-"disziplin_narrativ": 1,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 0,
-"bauch_definition": 0,
-"objektivierung": 0,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "I stop questioning my normal hunger cues and just feed myself. A couple years ago I definitly fell in the trap to think that eating less brings better results. (…) Today I ate like it wa smy job . I didnt track a single thing. Becuase i am not trying to shrink anymore, I try to row. But there is so much fear around carlories, portions and earning your food... It took me a long time to realise i dont need to earn my food! I am eating so I can exercise not the other way around. Its about being the happiest, strongest liveliest version of myself. I feel the best when I can have another yogurt bowl. And the freedom to eat 10 japanese eggs.",
-"interpretation": "Das Video inszeniert eine scheinbar freie und intuitive Ernährungsweise, die jedoch weiterhin stark durch normative Vorstellungen von „gesunder“ Ernährung geprägt ist. Disziplin wird nicht mehr über Kalorienkontrolle vermittelt, sondern über die konsequente Auswahl „guter“ Lebensmittel. Der Verzicht auf Süßigkeiten bleibt unsichtbar, wodurch eine subtile Form von Restriktion entsteht, die als natürliche und unproblematische Praxis dargestellt wird. Damit wird eine Form von „normalisierter Disziplin“ reproduziert, die weniger offensichtlich, aber dennoch wirksam ist.",
-"id": 8
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9u1qd4/",
-"videonr": 13,
-"views": 94261,
-"follower": 193876,
-"gespeichert": 1320,
-"likes": 5570,
-"erster_eindruck": "wanne lose body fat and look lean and toned, high protein fat lose meals",
-"botschaft": "Das Video vermittelt, dass eine proteinreiche leichte Ernährung dich dünn aaussehen lässt und dass das das Ziel ist.",
-"vermittelt": "Implizit wird eine restriktive Ernährungsform normalisiert, bei der geringe Portionsgrößen und eine starke Fokussierung auf Protein als selsbtverständlich erscheinen. Der Verzicht kalorienreicher oder ungesunder Ernährung wird nicht themaisiert.",
-"p_morgens": 2,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": null,
-"p_snack3": 0,
-"struktur": 2,
-"gesamtmenge": 1,
-"stil": 1.2,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": "1,2,3",
-"bauch_definition": 2,
-"objektivierung": 2.3,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "You want to look leane and toned what you put in your body matters",
-"interpretation": "Das Video repräsentiert einen typischen Fall der „normalisierten Disziplin“, bei dem eine kontrollierte und restriktive Ernährung nicht als solche erscheint, sondern als alltägliche und gesunde Praxis inszeniert wird. Durch die Kombination aus kleinen Portionsgrößen und proteinorientierter Lebensmittelauswahl wird eine Form von Selbstkontrolle vermittelt, die als selbstverständlich gilt. Diese Darstellung trägt dazu bei, ein Körperideal zu stabilisieren, bei dem ein schlanker und definierter Körper als Ergebnis solcher Ernährungspraktiken verstanden wird.",
-"id": 9
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9u8hJR/",
-"videonr": 15,
-"views": 34769,
-"follower": 233423,
-"gespeichert": 363,
-"likes": 3993,
-"erster_eindruck": "cutting",
-"botschaft": "Wie wichtig, Disziplin ist in Form von einer cleanen Ernährung und viel Bewegung um seinen Traumkörper zu halten.",
-"vermittelt": "Implizit wird auch eine sehr hohe Form von Selbstkontrolle normailisiert. Das Erreichen eines bestimmten selbst vorgegebenen Zielwert erscheint als zwingend notwendig. Dadurch ist Flexibilität im Alltag kaum vorhergesehen.",
-"p_morgens": 2,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": null,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": "1,2,3",
-"bauch_definition": 2,
-"objektivierung": 2.3,
-"fitness_kontext": 1.2,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "I am currently on a meal plan, because it makes it so much easier to stick to it in my opinion.",
-"interpretation": "Das Video stellt eine ausgeprägte Form von Disziplin dar, bei dem der Alltag einschließlich spontane Aktivitäten wie ein Spaziergang an vorgegeben Zielwerten ausgerichtet wird. Es wird ein Verständis von Selbstoptimierung vermittelt, bei dem der Körper als koninuierliches zu regulierendes Projekt erscheint.",
-"id": 10
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9mnWvD/",
-"videonr": 16,
-"views": 86571,
-"follower": 132674,
-"gespeichert": 1864,
-"likes": 6720,
-"erster_eindruck": "Gain weight, high protein diet",
-"botschaft": "Das Video vermittelt, dass man auch beim Zunehmen ausgewogen essen kann und keine Angst vor Kohlenhydraten haben muss, solange die Ernährung insgesamt zielgerichtet bleibt.",
-"vermittelt": "Trotz der Betonung von Offenheit gegenüber Kohlenhydraten bleibt die Ernährung stark reguliert. „Erlaubte“ Lebensmittel wie Pasta werden integriert, jedoch innerhalb eines klar strukturierten und zielorientierten Rahmens. Gleichzeitig werden Süßigkeiten weiterhin durch „gesunde“ Alternativen ersetzt.  Disziplin zeigt sich hier in der konsequenten Ausrichtung auf Nährstoffziele und der Kontrolle der Lebensmittelauswahl.",
-"p_morgens": 2,
-"p_snack1": 1,
-"p_mittag": 2,
-"p_snack2": 2.2,
-"p_abend": 2,
-"p_snack3": 2,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 2,
-"kontrolle": 3,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 1,
-"objektivierung": 3,
-"fitness_kontext": "1,2,3",
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "\"I literally was so tired, but I wanted to reach my protein goal.\"",
-"interpretation": "Das Video inszeniert eine Form von kontrollierter Flexibilität, bei der scheinbare Freiheit („keine Angst vor Carbs“) mit einer weiterhin stark regulierten Ernährungsweise kombiniert wird. Diese Darstellung wirkt weniger restriktiv als klassische Diätformen, stabilisiert jedoch weiterhin normative Vorstellungen von „richtiger“ Ernährung durch die Bevorzugung bestimmter Lebensmittel und die Ausrichtung auf konkrete Ziele wie Proteinaufnahme. Disziplin wird dabei nicht aufgehoben, sondern modernisiert: Sie erscheint als flexible, aber dennoch konsequent durchgehaltene Praxis der Selbstoptimierung.",
-"id": 11
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9mWNuF/",
-"videonr": 17,
-"views": 66360,
-"follower": 1344,
-"gespeichert": 189,
-"likes": 2000,
-"erster_eindruck": "Realistic , High protein and whole foods focused",
-"botschaft": "Das Video vermittelt, dass eine bewusste und gesunde Ernährung auch an Rest Days notwendig ist und durch wissenschaftlich fundierte Entscheidungen optimiert werden kann.",
-"vermittelt": "Das Video vermittelt, dass eine bewusste und gesunde Ernährung auch an Rest Days notwendig ist und durch wissenschaftlich fundierte Entscheidungen optimiert werden kann.",
-"p_morgens": 1,
-"p_snack1": null,
-"p_mittag": 2.2,
-"p_snack2": 1,
-"p_abend": 1,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 1,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 1,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2.3,
-"bauch_definition": 3,
-"objektivierung": 3,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "If I find a meal I like I will eat it on repeat for months and this is me with this breakfast.",
-"interpretation": "Das Video kombiniert wissenschaftliche Autorität mit einer subtil restriktiven Ernährungsweise. Disziplin wird hier nicht als moralische oder leistungsbezogene Kategorie inszeniert, sondern als rational begründete Notwendigkeit. Durch die professionelle Rolle der Influencerin wird die gezeigte Ernährung zusätzlich legitimiert und erscheint als objektiv „richtig“. Gleichzeitig bleibt die Restriktion unsichtbar, da sie in Form von gesunden Alternativen und scheinbar ausreichender Ernährung vermittelt wird. Dadurch wird eine Form von disziplinierter Ernährung stabilisiert, die sich durch wissenschaftliche Argumentation besonders überzeugend darstellt.",
-"id": 12
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9uNoKG/",
-"videonr": 18,
-"views": 11818,
-"follower": 284222,
-"gespeichert": 51,
-"likes": 1617,
-"erster_eindruck": "gymgirl who isn´t restricting herself",
-"botschaft": "Das Video vermittelt, dass man sich nicht einschränken muss, um fit zu sein, und dass eine flexible, genussorientierte Ernährung möglich ist.",
-"vermittelt": "Weniger restriktive Ernährung, da auch ungesundere Nahrung gezeigt wird, wie ein Burger vorm Training. Die Logik von Disziplin wird also ein wenig aufgebrochen, da die Influencerin trotzdem fit aussieht.",
-"p_morgens": 2,
-"p_snack1": 2,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 3,
-"stil": 1.4,
-"restriktion": 1,
-"kontrolle": 1,
-"disziplin_narrativ": 4,
-"verh_narrativ_restriktion": null,
-"koerper_inszenierung": 0,
-"bauch_definition": 0,
-"objektivierung": 0,
-"fitness_kontext": 3,
-"verh_narrativ_koerper": 2,
-"inszenierung_grad": 3,
-"zitat": null,
-"interpretation": "Das Video stellt einen Kontrast zu den überwiegend disziplinierten Ernährungsdarstellungen dar, da hier eine deutlich freiere und genussorientierte Praxis gezeigt wird. Im Unterschied zu anderen Fällen wird Disziplin nicht über Kontrolle oder Verzicht vermittelt, sondern teilweise zurückgenommen. Gleichzeitig bleibt die Verbindung zwischen Körper und Ernährung bestehen, sodass die gezeigte Freiheit nicht vollständig von normativen Erwartungen entkoppelt ist. Dadurch fungiert das Video als wichtiger Gegenpol, der die dominanten Muster der „normalisierten Disziplin“ sichtbar macht.",
-"id": 13
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9mceJE/",
-"videonr": 19,
-"views": 59764,
-"follower": "1,2 Mio",
-"gespeichert": 793,
-"likes": 6823,
-"erster_eindruck": "goal to lean up, tone up and have a healthy and balanced relationship with food.",
-"botschaft": "Das Video vermittelt, dass man durch eine ausgewogene, proteinreiche Ernährung einen definierten Körper erreichen kann, ohne eine ungesunde Beziehung zum Essen zu entwickeln.",
-"vermittelt": "Implizit wird eine kontrollierte Ernährungsweise vermittelt, die als „balanced“ dargestellt wird. Obwohl keine extreme Restriktion sichtbar ist, erfolgt eine klare Auswahl „richtiger“ Lebensmittel, während klassische Süßigkeiten vermieden werden. Die Ernährung ist damit weniger offensichtlich restriktiv, bleibt jedoch an bestimmte Regeln und Zielvorstellungen gebunden. Disziplin erscheint hier als Teil einer gesunden und normalen Beziehung zum Essen.",
-"p_morgens": 2,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": 0.5,
-"p_abend": 2,
-"p_snack3": 2,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 2,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 0,
-"objektivierung": 0,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "My goal is to lean out, tone up and have a healthy and balanced relationship with food.",
-"interpretation": "Das Video inszeniert eine Form von moderater, subtiler Disziplin, bei der Kontrolle nicht als Einschränkung, sondern als Bestandteil eines gesunden Lebensstils dargestellt wird.",
-"id": 14
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9mE6TJ/",
-"videonr": 20,
-"views": 82812,
-"follower": 120528,
-"gespeichert": 1097,
-"likes": 6175,
-"erster_eindruck": "to build muscles and stay lean",
-"botschaft": "Das Video vermittelt, dass eine gezielte und kontrollierte Ernährungsstrategie notwendig ist, um einen definierten Körper zu erreichen und diesen langfristig zu halten, selbst wenn die Kalorienzufuhr erhöht wird.",
-"vermittelt": "Implizit wird eine hochgradig kontrollierte Ernährungsweise normalisiert, bei der selbst Phasen der Kaloriensteigerung präzise gesteuert werden. Der stark definierte Körper fungiert als visuelle Legitimation dieser Praxis. Gleichzeitig wird „Genuss“ stark eingeschränkt und nur in minimaler Form erlaubt, wodurch eine klare Trennung zwischen „richtigen“ und „abweichenden“ Lebensmitteln bestehen bleibt. Disziplin zeigt sich hier besonders deutlich durch kontinuierliches Tracking und die permanente Ausrichtung an körperlichen Zielen.",
-"p_morgens": 2,
-"p_snack1": 1,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 1.23,
-"bauch_definition": 3,
-"objektivierung": 2.3,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": null,
-"interpretation": "Das Video stellt eine intensive Form von disziplinierter Selbstoptimierung dar, bei der Ernährung als exakt steuerbares Instrument zur Körperformung eingesetzt wird. Durch die Kombination aus sichtbarer Körperinszenierung und strategischer Ernährungsplanung wird der Körper als Ergebnis präziser Kontrolle präsentiert. Gleichzeitig wird Disziplin durch kleine Zugeständnisse („guilty pleasure“) scheinbar aufgelockert, ohne die grundlegende Struktur der Kontrolle infrage zu stellen. Dadurch entsteht eine Form von „maximierter Disziplin“, die durch minimale Flexibilität ergänzt wird, aber insgesamt stark normativ wirkt.",
-"id": 15
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9u87Gb/",
-"videonr": 21,
-"views": 28117,
-"follower": 18312,
-"gespeichert": 86,
-"likes": 1567,
-"erster_eindruck": "gaining weight journey",
-"botschaft": "Das Video vermittelt, dass eine gezielte und professionelle Steuerung der Ernährung notwendig ist, um gesund zuzunehmen.",
-"vermittelt": "Implizit wird eine Form von kontrollierter und externer Disziplin vermittelt, bei der Ernährung nicht intuitiv, sondern nach festen Vorgaben angepasst wird. Obwohl das Ziel Gewichtszunahme ist, bleibt die Ernährung stark reguliert und an klare Regeln gebunden. Disziplin zeigt sich hier nicht durch Verzicht, sondern durch die konsequente Einhaltung eines strukturierten Plans.",
-"p_morgens": 2,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 2,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 0,
-"objektivierung": 0,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": null,
-"interpretation": "Das Video stellt eine Form von professionell angeleiteter Disziplin dar, bei der Ernährung als planbare und steuerbare Praxis erscheint. Durch die Zusammenarbeit mit einem Diätisten wird die Kontrolle über die Ernährung legitimiert und als notwendig für gesundheitliche Ziele präsentiert. Auch hier wird deutlich, dass Disziplin unabhängig vom Ziel (Abnahme oder Zunahme) eine zentrale Rolle spielt. Der Körper erscheint als etwas, das durch gezielte und kontrollierte Eingriffe optimiert werden kann.",
-"id": 16
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9mo1vj/",
-"videonr": 22,
-"views": 25651,
-"follower": 23175,
-"gespeichert": 626,
-"likes": 1230,
-"erster_eindruck": "high protein + wholefoods",
-"botschaft": "Das Video vermittelt, dass eine ausgewogene und gesunde Ernährung möglich ist, wenn man bewusst Lebensmittel auswählt und deren Nutzen versteht.",
-"vermittelt": "Implizit wird eine stark regulierte Ernährungsweise als „balanced“ dargestellt, obwohl die Auswahl der Lebensmittel sehr eingeschränkt und gesundheitsorientiert ist. Genuss wird umdefiniert, indem bereits kleine Mengen natürlicher Süße als „Dessert“ gelten. Durch die ständige funktionale Erklärung der Lebensmittel wird Essen primär als Mittel zur Optimierung des Körpers dargestellt. Der sehr definierte Körper fungiert dabei als visuelle Bestätigung dieser Ernährungsweise. Disziplin wird hier über Wissen und Kontrolle legitimiert und erscheint als rational und notwendig.",
-"p_morgens": 2,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 1,
-"p_snack3": null,
-"struktur": 2,
-"gesamtmenge": 1,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 3,
-"objektivierung": 2.3,
-"fitness_kontext": 3,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "Nothing extreme just basic meals that support my goals and keep me consistent.",
-"interpretation": "Das Video inszeniert eine Form von wissenschaftlich begründeter und gleichzeitig ästhetisch orientierter Disziplin, bei der Ernährung als gezielt steuerbares Instrument zur Körperoptimierung verstanden wird. Die Bezeichnung als „balanced“ verschleiert dabei die tatsächliche Einschränkung der Lebensmittelauswahl und trägt zur Normalisierung dieser Praxis bei. Durch die Kombination aus Expertenwissen, körperlicher Inszenierung und kontrolliertem Genuss entsteht eine besonders überzeugende Darstellung von Disziplin, die sowohl rational als auch visuell legitimiert wird.",
-"id": 17
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9uJPxU/",
-"videonr": 23,
-"views": 64321,
-"follower": 23687,
-"gespeichert": 1333,
-"likes": 3873,
-"erster_eindruck": "In a calorie deficit. Lose body fat and stay in a caloriedeficit",
-"botschaft": "Das Video vermittelt, dass eine konsequente und strukturierte Ernährung während eines Cuts effektiv ist und sich positiv auf das eigene Wohlbefinden und den Körper auswirkt.",
-"vermittelt": "Implizit wird eine hochgradig restriktive und repetitive Ernährungsweise normalisiert, bei der Variation zugunsten von Kontrolle reduziert wird. Die starke körperliche Veränderung dient als visuelle Bestätigung dieser Praxis. Besonders auffällig ist, dass Disziplin nicht als belastend, sondern als positiv und energiegebend dargestellt wird („fühle mich super gut“).",
-"p_morgens": 2,
-"p_snack1": 2,
-"p_mittag": 1,
-"p_snack2": null,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 2,
-"disziplin_narrativ": 2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2.3,
-"bauch_definition": 3,
-"objektivierung": 2.3,
-"fitness_kontext": 1.3,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "I a defntly getteing close to my cut, was is so crazy to me. I feel like I just started last week and all of the sudden I feel so good in my body.",
-"interpretation": "Das Video inszeniert eine intensive Form von disziplinierter Selbstoptimierung, bei der Ernährung durch Wiederholung und klare Struktur maximal kontrollierbar gemacht wird. Der Körper fungiert als sichtbares Ergebnis dieser Disziplin und legitimiert die gezeigte Praxis. Besonders relevant ist die positive emotionale Rahmung, durch die die restriktive Ernährungsweise nicht als Verzicht, sondern als Quelle von Wohlbefinden dargestellt wird. Dadurch wird ein Ideal stabilisiert, in dem Disziplin nicht nur notwendig, sondern auch wünschenswert und belohnend erscheint.",
-"id": 18
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9uNTCd/",
-"videonr": 24,
-"views": 25664,
-"follower": "2,3 Mio",
-"gespeichert": 234,
-"likes": 1469,
-"erster_eindruck": "Um keinen Blähbauch zu haben",
-"botschaft": "Das Video vermittelt, dass eine gezielte Ernährung und ein gesunder Lebensstil entscheidend für Darmgesundheit, Leistungsfähigkeit und körperliches Wohlbefinden sind.",
-"vermittelt": "Implizit wird eine stark kontrollierte Ernährungsweise durch gesundheitliche Argumente legitimiert. Der Fokus auf Darmgesundheit und Supplements verstärkt den Eindruck, dass Ernährung optimiert und gezielt gesteuert werden muss. Gleichzeitig bleibt die Restriktion unsichtbar, da sie als „gesund“ und notwendig dargestellt wird. Der sehr definierte Körper fungiert als visuelle Bestätigung dieser Praxis und verbindet Gesundheit, Leistungsfähigkeit und ein schlankes Erscheinungsbild.",
-"p_morgens": 0.5,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": null,
-"struktur": 2,
-"gesamtmenge": 2,
-"stil": 1.3,
-"restriktion": 2,
-"kontrolle": 2,
-"disziplin_narrativ": 1,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2.3,
-"bauch_definition": 2,
-"objektivierung": 2.3,
-"fitness_kontext": "1,2,3",
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "Das esse ich an einem Tag während ich ganz gezielt auf meine Darmgesundheit achte. Ihr kennt das alle der Darm ist einfach die Basis für unser Wohlbefinden.",
-"interpretation": "Das Video stellt eine Form von gesundheitlich legitimierter Disziplin dar, bei der Ernährung als zentrales Instrument zur Optimierung von Körper und Wohlbefinden verstanden wird. Durch die Verknüpfung von Darmgesundheit, Leistungsfähigkeit und äußerem Erscheinungsbild wird ein Ideal erzeugt, bei dem ein sehr schlanker und definierter Körper als Ausdruck von Gesundheit erscheint. Gleichzeitig wird die restriktive Ernährungsweise durch den Gesundheitsdiskurs normalisiert und entproblematisiert. Disziplin wird hier nicht als Einschränkung, sondern als notwendige Voraussetzung für ein funktionierendes und leistungsfähiges Selbst dargestellt.",
-"id": 19
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9uJNe3/",
-"videonr": 25,
-"views": 45836,
-"follower": 421721,
-"gespeichert": 527,
-"likes": 4792,
-"erster_eindruck": "Your body can not glow without fat.",
-"botschaft": "Das Video vermittelt, dass eine gesunde und proteinreiche Ernährung wichtig ist, gleichzeitig aber auch spontane und genussvolle Momente Teil eines ausgewogenen Lebensstils sein können.",
-"vermittelt": "Das Video vermittelt, dass eine gesunde und proteinreiche Ernährung wichtig ist, gleichzeitig aber auch spontane und genussvolle Momente Teil eines ausgewogenen Lebensstils sein können.",
-"p_morgens": 2,
-"p_snack1": 0.5,
-"p_mittag": 2,
-"p_snack2": null,
-"p_abend": 1,
-"p_snack3": null,
-"struktur": 2,
-"gesamtmenge": 1,
-"stil": 3,
-"restriktion": 1,
-"kontrolle": 1,
-"disziplin_narrativ": 1,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 1,
-"objektivierung": 1.3,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "Your physic wont change, your skin sucks, your energy is always low….",
-"interpretation": "Das Video inszeniert eine Balance zwischen Disziplin und Freiheit, bei der Kontrolle die Grundlage bildet und Flexibilität nur innerhalb bestimmter Grenzen zugelassen wird. Diese Darstellung wirkt besonders anschlussfähig, da sie weniger restriktiv erscheint als strikt kontrollierte Ernährungsweisen, gleichzeitig aber weiterhin klare normative Vorstellungen von „richtiger“ Ernährung reproduziert. Disziplin wird hier nicht aufgehoben, sondern als flexible und alltagstaugliche Praxis neu gerahmt, die mit Genuss vereinbar scheint, ohne die grundlegende Struktur der Kontrolle infrage zu stellen.",
-"id": 20
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9u1gy6/",
-"videonr": 26,
-"views": 394582,
-"follower": 316930,
-"gespeichert": 3832,
-"likes": 20133,
-"erster_eindruck": "intuitiv, gym girl, diät",
-"botschaft": "Das Video vermittelt, dass man einen definierten und ästhetischen Körper erreichen kann, ohne sich stark einzuschränken, solange man „clever“ und ausgewogen isst.",
-"vermittelt": "Implizit wird eine kontrollierte Ernährungsweise vermittelt, die als entspannt und flexibel erscheint, jedoch weiterhin auf bestimmten Prinzipien basiert. Klassische Genussmittel werden nicht vollständig integriert, sondern durch „gesündere“ Alternativen ersetzt (z.B. Protein-Schokolade). Dadurch bleibt eine klare Unterscheidung zwischen „richtigen“ und „weniger erwünschten“ Lebensmitteln bestehen. Der Körper fungiert als zentrales Argument für die Wirksamkeit dieser Ernährungsweise.",
-"p_morgens": 2,
-"p_snack1": 1,
-"p_mittag": 1,
-"p_snack2": 1,
-"p_abend": 1,
-"p_snack3": null,
-"struktur": 1,
-"gesamtmenge": 1,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 2,
-"disziplin_narrativ": 3,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 1,
-"objektivierung": 2.3,
-"fitness_kontext": 1.2,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "Was isst du eigentlich den ganzen Tag um so einen schönen Körper zu haben? Leute tranquillo, ich zeigs euch!",
-"interpretation": "Das Video inszeniert eine Form von subtiler Disziplin, bei der Kontrolle nicht als Einschränkung wahrgenommen wird, sondern als Teil eines ausgewogenen Lebensstils erscheint. Durch die Integration scheinbar genussvoller Elemente wird die Ernährungsweise zugänglicher dargestellt, während die zugrunde liegende Struktur der Kontrolle erhalten bleibt. Der Körper dient dabei als visuelle Legitimation und verstärkt die Botschaft, dass diese Form der „balancierten“ Ernährung zu einem ästhetisch idealisierten Körper führt. Dadurch wird Disziplin in eine alltagstaugliche und erstrebenswerte Form überführt.",
-"id": 21
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9mTACL/",
-"videonr": 30,
-"views": 159431,
-"follower": 436873,
-"gespeichert": 1814,
-"likes": 11353,
-"erster_eindruck": "I lost over 30 pouds…",
-"botschaft": "Das Video vermittelt, dass langfristiger Erfolg durch eine konsequente und durchhaltbare Ernährungsweise erreicht wird, bei der es wichtig ist, Routinen zu entwickeln und konstant zu bleiben.",
-"vermittelt": "Implizit wird eine stark kontrollierte und restriktive Ernährungsweise als Schlüssel zum Erfolg normalisiert. Die Betonung von „Konsistenz“ verschleiert dabei, dass diese durch monotone und eingeschränkte Ernährung erreicht wird. Der Verzicht auf bestimmte Lebensmittel wird nicht thematisiert, wodurch die Restriktion unsichtbar bleibt. Der transformierte Körper fungiert als eindeutiger Beweis für die Wirksamkeit dieser Disziplin.",
-"p_morgens": 2,
-"p_snack1": "0,5+1",
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": "2,3,5",
-"bauch_definition": 2,
-"objektivierung": 2.3,
-"fitness_kontext": 1.2,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "I lost about 30 pounds and this is the part no one talks about. It´s how do you succesfully maintain thta weight loss, without backtraking and gaining it all back. Me personally I eat in a way, that I can repeat without overthinking it.",
-"interpretation": "Das Video stellt Disziplin vor allem als Fähigkeit zur langfristigen Aufrechterhaltung von Routinen dar. Durch die Betonung von Konsistenz wird eine Ernährungsweise legitimiert, die stark auf Wiederholung und Kontrolle basiert. Die Transformation des Körpers dient als visuelle Bestätigung und verstärkt die normative Botschaft, dass solche Formen der Selbstdisziplin notwendig sind, um ein bestimmtes Körperideal zu erreichen. Disziplin erscheint hier weniger als kurzfristiger Verzicht, sondern als dauerhafte Lebensweise.",
-"id": 22
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9uNyyu/",
-"videonr": 31,
-"views": 180862,
-"follower": 188777,
-"gespeichert": 5871,
-"likes": 14013,
-"erster_eindruck": "clean food, high protein, balanced",
-"botschaft": "Das Video vermittelt, dass eine gesunde, selbstgekochte und nährstoffreiche Ernährung in Kombination mit regelmäßigem Training zu einem ästhetischen und leistungsfähigen Körper führt.",
-"vermittelt": "Implizit wird eine stark gesundheits- und leistungsorientierte Ernährungsweise normalisiert, bei der „cleane“ und nährstoffreiche Lebensmittel im Vordergrund stehen. Auch wenn ein süßes Element integriert wird, bleibt die Grundstruktur der Ernährung kontrolliert und zielgerichtet. Der Körper wird durch die Inszenierung im engen Outfit als Ergebnis dieser Lebensweise präsentiert. Disziplin zeigt sich hier in der konsequenten Orientierung an Gesundheit, Training und bewusster Lebensmittelauswahl.",
-"p_morgens": 2,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": null,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1.3,
-"restriktion": 2,
-"kontrolle": 2,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 0,
-"objektivierung": 0,
-"fitness_kontext": 3,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "This is my yogurt homemade chiaseed bowl: protein, antioxidantions, fiber. This is so helathy and keeps me full for a pretty long time.",
-"interpretation": "Das Video inszeniert eine Form von ästhetisch und gesundheitlich begründeter Disziplin, bei der Ernährung als Teil eines umfassenden Lebensstils aus Training, Selbstoptimierung und Körperpflege verstanden wird.",
-"id": 23
-},
-{
-"videolink": "https://vm.tiktok.com/ZGd9mGqkw/",
-"videonr": 33,
-"views": 300268,
-"follower": 193878,
-"gespeichert": 5019,
-"likes": 31402,
-"erster_eindruck": "high protein, wholefoods, easy",
-"botschaft": "Das Video vermittelt, dass ein gesunder Start ins neue Jahr durch eine bewusste Ernährung und regelmäßiges Training erreicht werden kann.",
-"vermittelt": "Implizit wird eine standardisierte Vorstellung von „gesunder“ Ernährung und Lebensweise vermittelt, die auf Protein, unverarbeiteten Lebensmitteln und Training basiert. Der Körper dient als visuelle Bestätigung dieser Praxis. Disziplin erscheint hier als grundlegende Voraussetzung für einen erfolgreichen und „richtigen“ Start ins neue Jahr und wird als selbstverständlich vorausgesetzt.",
-"p_morgens": 0.5,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 1,
-"p_snack3": 1,
-"struktur": 2,
-"gesamtmenge": 1,
-"stil": 1.3,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 1.2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": "1,2,3",
-"bauch_definition": 1,
-"objektivierung": 2.3,
-"fitness_kontext": 2,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "I try to choose food that is nutrion densed, so I know how much protein I am getting in for the day.",
-"interpretation": "Disziplin wird hier als normaler Bestandteil eines gesunden Alltags etabliert und nicht als besondere Anstrengung hervorgehoben.",
-"id": 24
-},
-{
-"videolink": null,
-"videonr": 35,
-"views": 177608,
-"follower": 10329,
-"gespeichert": 2988,
-"likes": 15964,
-"erster_eindruck": "To build muscles and feel my best",
-"botschaft": "Das Video vermittelt, dass man viel essen, Muskeln aufbauen und gleichzeitig lean bleiben kann, wenn man sich bewusst und gesund ernährt.",
-"vermittelt": "Implizit wird eine restriktive und kontrollierte Ernährungsweise vermittelt, die im Widerspruch zur Selbstbeschreibung steht. Trotz der Aussage, viel zu essen, wirkt die tatsächliche Nahrungsaufnahme begrenzt und stark strukturiert. Die Abwesenheit „ungesunder“ Lebensmittel und die unregelmäßige Mahlzeitenstruktur deuten auf eine funktionale und zielgerichtete Ernährung hin. Disziplin wird hier verschleiert, indem sie als „viel essen“ und entspannt dargestellt wird.",
-"p_morgens": 2,
-"p_snack1": "0,5+ 1+1",
-"p_mittag": null,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 2,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 2,
-"disziplin_narrativ": 1.3,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2.3,
-"bauch_definition": 2,
-"objektivierung": 2,
-"fitness_kontext": 2.3,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 3,
-"zitat": "Here is everthing that I eat n a day as a girl that eats a lot of food and loves to eat and wants to build muscles while staying relativly lean… I don´t really know.",
-"interpretation": "Der stark definierte Körper fungiert als visuelle Legitimation dieser Praxis und verstärkt die Glaubwürdigkeit der dargestellten Ernährungsweise. Dadurch entsteht ein verzerrtes Bild von „viel essen“, das weiterhin an strenge normative Vorstellungen von Ernährung und Körper gebunden ist.",
-"id": 25
-},
-{
-"videolink": null,
-"videonr": 36,
-"views": 265838,
-"follower": 599242,
-"gespeichert": 4299,
-"likes": 28476,
-"erster_eindruck": "160g protein, 2100 calories as an active 29 years old",
-"botschaft": "Das Video vermittelt, dass eine disziplinierte, proteinreiche Ernährung notwendig ist, um einen definierten und gesunden Körper zu erreichen, wobei kleine Ausnahmen möglich sind.",
-"vermittelt": "Implizit wird eine stark kontrollierte Ernährungsweise vermittelt, bei der klare Zielvorgaben (z.B. Proteinmenge) den Alltag bestimmen. Gleichzeitig wird Genuss als begrenzt und potenziell regelüberschreitend dargestellt („vielleicht ausnahmsweise“). Der Vergleich mit anderen (die mehr essen) verstärkt die eigene Disziplin. Dadurch entsteht eine Hierarchie, in der kontrolliertes Essverhalten als überlegen erscheint.",
-"p_morgens": 2,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": null,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 1,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 3,
-"bauch_definition": 1,
-"objektivierung": 3,
-"fitness_kontext": 1.2,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "I always have some version of this everday because it keeps me full, with 27 grams of protein and it just tastes so good.",
-"interpretation": "Genuss erscheint als Ausnahme, die bewusst reguliert werden muss. Der Körper fungiert als sichtbares Ergebnis dieser Selbstkontrolle und legitimiert die Einschränkung. Dadurch wird ein Ideal vermittelt, in dem Disziplin nicht nur notwendig, sondern auch moralisch überlegen erscheint.",
-"id": 26
-},
-{
-"videolink": null,
-"videonr": 37,
-"views": 428424,
-"follower": 977727,
-"gespeichert": 3768,
-"likes": 31169,
-"erster_eindruck": "intuitivly, binge eating, loves working out+whole foods",
-"botschaft": null,
-"vermittelt": null,
-"p_morgens": 2,
-"p_snack1": "2+2",
-"p_mittag": 2,
-"p_snack2": 0.5,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 3.3,
-"stil": 1,
-"restriktion": 2,
-"kontrolle": 2,
-"disziplin_narrativ": 1.3,
-"verh_narrativ_restriktion": null,
-"koerper_inszenierung": null,
-"bauch_definition": null,
-"objektivierung": null,
-"fitness_kontext": null,
-"verh_narrativ_koerper": null,
-"inszenierung_grad": null,
-"zitat": null,
-"interpretation": null,
-"id": 27
-},
-{
-"videolink": null,
-"videonr": 38,
-"views": 111133,
-"follower": 511158,
-"gespeichert": 1569,
-"likes": 15900,
-"erster_eindruck": "trying to build muscles while actually enjoying the meal she eats",
-"botschaft": "Das Video vermittelt, dass eine proteinreiche Ernährung zum Muskelaufbau einfach, lecker und alltagstauglich sein kann, wenn man die „richtigen“ Lebensmittel auswählt.",
-"vermittelt": "Implizit wird eine weiterhin stark kontrollierte Ernährungsweise vermittelt, die jedoch als unkompliziert und selbstverständlich dargestellt wird. Die Auswahl der Lebensmittel bleibt eingeschränkt auf „cleane“ und funktionale Optionen, während klassische Genussmittel fehlen. Disziplin wird hier nicht sichtbar gemacht, sondern als bereits internalisierte Routine präsentiert („es ist leicht“). Dadurch erscheint eine regulierte Ernährungsweise als natürlicher Zustand",
-"p_morgens": 2,
-"p_snack1": 1,
-"p_mittag": 2,
-"p_snack2": null,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1.3,
-"restriktion": 2,
-"kontrolle": 2,
-"disziplin_narrativ": 1,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 1,
-"objektivierung": 3,
-"fitness_kontext": "1,2,3",
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "I used to think all protein foods where disgusting. And no wonder, my diet consistet soly ofcaramel flavoured grit on the most diabolic protein bars known to man. Now thankfully I know eating to build muscles is actually very easy.",
-"interpretation": "Das Video inszeniert eine Form von internalisierter Disziplin, bei der kontrolliertes Essverhalten nicht mehr als Anstrengung wahrgenommen wird, sondern als selbstverständlicher Bestandteil des Alltags erscheint. Durch den humorvollen Ton und die Betonung von Leichtigkeit wird die zugrunde liegende Struktur der Kontrolle verdeckt. Gleichzeitig wird ein Ideal vermittelt, bei dem eine optimierte Ernährung nicht nur effektiv, sondern auch mühelos umsetzbar ist. Dadurch wird Disziplin entproblematisiert und als natürlicher Zustand stabilisiert.",
-"id": 28
-},
-{
-"videolink": null,
-"videonr": 39,
-"views": null,
-"follower": null,
-"gespeichert": null,
-"likes": null,
-"erster_eindruck": "minus 10 kg, binge eating issues",
-"botschaft": "Das Video vermittelt, dass eine bewusste kontrollierte Ernährung  notwenidg sind um Gewicht zu verlieren, auch wenn Herausforderungen wie Binge eating bestehen.",
-"vermittelt": "Implizit wird eine sehr restriktive Ernährungsweise sichtbar, die in Spannung zu den geschilderten Problemen mit Binge Eating steht. Die gezeigten kleinen Portionsgrößen deuten auf eine starke Einschränkung hin, die gleichzeitig als kontrolliertes und bewusstes Verhalten dargestellt wird. Dadurch wird eine mögliche Verbindung zwischen restriktiver Ernährung und Kontrollverlust indirekt sichtbar, ohne jedoch explizit reflektiert zu werden.",
-"p_morgens": 1,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": 1,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 3.1,
-"restriktion": 2,
-"kontrolle": 2,
-"disziplin_narrativ": 2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": 2,
-"bauch_definition": 1,
-"objektivierung": 2.3,
-"fitness_kontext": 0,
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 2,
-"zitat": "Dann gibt’s Frühstück, heute gab es 2 Mandeln zum Frühstück. Ich liebe Mandeln einfach und da muss ich vorsichtig sein, weil ich die wirklich bingen könnte.",
-"interpretation": "Das Video macht eine ambivalente Form von Disziplin sichtbar, bei der starke Kontrolle und Kontrollverlust nebeneinander bestehen.",
-"id": 29
-},
-{
-"videolink": null,
-"videonr": 40,
-"views": 201841,
-"follower": 309502,
-"gespeichert": 1830,
-"likes": 22825,
-"erster_eindruck": "boring meals",
-"botschaft": "Das Video vermittelt, dass eine konsequente und gleichbleibende Ernährung einfach umzusetzen ist und keine besondere Anstrengung erfordert.",
-"vermittelt": "Implizit wird eine stark kontrollierte und monotone Ernährungsweise normalisiert, bei der Variation zugunsten von Einfachheit und Kontrolle reduziert wird",
-"p_morgens": 2,
-"p_snack1": null,
-"p_mittag": 2,
-"p_snack2": null,
-"p_abend": 2,
-"p_snack3": 1,
-"struktur": 3,
-"gesamtmenge": 2,
-"stil": 1.3,
-"restriktion": 3,
-"kontrolle": 3,
-"disziplin_narrativ": 2,
-"verh_narrativ_restriktion": 1,
-"koerper_inszenierung": "1,2,3",
-"bauch_definition": 1,
-"objektivierung": "1,2,3",
-"fitness_kontext": "1,2,3",
-"verh_narrativ_koerper": 1,
-"inszenierung_grad": 1,
-"zitat": "Honestly my meals are just really boring !",
-"interpretation": "Disziplin erscheint hier nicht mehr als aktive Leistung, sondern als automatisierte Praxis, die so selbstverständlich geworden ist, dass sie kaum noch wahrgenommen wird. Dadurch wird ein Ideal vermittelt, in dem maximale Kontrolle mit minimalem Aufwand verbunden ist.",
-"id": 30
-}
-]
-</script>
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="modalPanel">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Schließen">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
 <script>
-const DATA = JSON.parse(document.getElementById('video-data').textContent);
+const CASES = [{"id": 1, "videoLink": "https://vm.tiktok.com/ZGd9uFNH4/", "videoRef": 2, "metrics": {"views": "1,2 Mio am 23.04.2026", "follower": null, "gespeichert": null, "likes": null}, "erstindruck": "simple but high protein", "zentraleBotschaft": "Das solltest du essen um dünnzu bleiben und um so auszusehen wie ich", "wasVermitteltWird": "", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "1", "values": [1.0], "label": "klein"}, "mittag": {"raw": "1", "values": [1.0], "label": "klein"}, "snack2": {"raw": "2", "values": [2.0], "label": "mittel"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": null, "values": [], "label": "keine Angabe"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "3", "codes": [3], "labels": ["leistungsorientiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "1.2", "codes": [1, 2], "labels": ["Nahaufnahme einzelner Körperteile", "Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "2 (Bauch),3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "3", "codes": [3], "labels": ["Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "to stay lean and hit my protein goals", "interpretation": "", "schlagwortRaw": "", "typCodes": [0], "typPrimary": 0}, {"id": 2, "videoLink": "https://vm.tiktok.com/ZGd9moM4S/", "videoRef": 3, "metrics": {"views": "702.495", "follower": "722524 am 04.05.2026", "gespeichert": null, "likes": "51.689"}, "erstindruck": "High fiber, clean eating for fat loss", "zentraleBotschaft": "Food matters! Was du isst hat viel Einfluss darauf, wie du aussehen wirst und vor allem die richtige Auswahl an Nährstoffen it relevant.", "wasVermitteltWird": "Es wird eine stark wissenbasierte Ernährung normalisisert. Disziplin zeigt sich hier weniger durch Verzicht oder extreme Einschränkung, sondern durch das „richtige Wissen“ und dessen konsequente Umsetzung.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "1", "values": [1.0], "label": "klein"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "4", "code": 4, "max": 4, "label": "mehr als drei kleine Mahlzeiten"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "2", "codes": [2], "labels": ["kohlenhydratreduziert"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1.    2.", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "1,2,3,", "codes": [1, 2, 3], "labels": ["Nahaufnahme einzelner Körperteile", "Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "I just wished that someone told me sooner when I wanted to get absolutly shredded, that food matters. Not how much training you are doing or cardio. Healthy food is high on fiber.", "interpretation": "Es wird eine wissendisziplinierte Disziplin dargestellt, bei welcher der Körper durch eine gezielte Nährstoffaufnahme gesteuert wird. Disziplin zeigt sich hier weniger durch Verzicht oder extreme Einschränkung, sondern durch das „richtige Wissen“ und dessen konsequente Umsetzung.", "schlagwortRaw": "wissenbasierte Diszplin - richtig Essen", "typCodes": [1], "typPrimary": 1}, {"id": 3, "videoLink": "https://vm.tiktok.com/ZGd9uR6mP/", "videoRef": 4, "metrics": {"views": "1,1 Millionen", "follower": "722.529", "gespeichert": null, "likes": "128.998"}, "erstindruck": "High protein! Fat loss meals", "zentraleBotschaft": "Das Video vermittelt, dass du durch eine Proteinreiche und eine niedrige Kalorienzufuhr einen definierten Körper erreichst, ohne auf Genuss zu verzichten.", "wasVermitteltWird": "Implizit wird eine stark restriktive und optimierte Ernährungsweise vermittelt, bei der sowohl Kalorien als auch Makronährstoffe gezielt kontrolliert werden. Genuss wird nicht frei gelebt, sondern stark reduziert und umdefiniert (z.B. Dattel als ausreichender Ersatz für Süßes). Die Betonung von „lecker“ dient dazu, die zugrunde liegende Einschränkung zu relativieren.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "0.5", "values": [0.5], "label": "Getränk"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "4", "code": 4, "max": 4, "label": "mehr als drei kleine Mahlzeiten"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "2,3,", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "3", "codes": [3], "labels": ["Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "What you eat should be your top priority not what you are eating!I want to help you", "interpretation": "Es wird eine Form von optimierter Disziplin, bei der Ernährung präzise gesteuert wird. Die Betonung auf den Geschmack und die Zufriedenheit entproblematisisert die Kontrolle und lässt es einfcah wirken. Implizit wird eine stark restriktive und optimierte Ernährungsweise vermittelt, bei der sowohl Kalorien als auch Makronährstoffe gezielt kontrolliert werden. Genuss wird nicht frei gelebt, sondern stark reduziert und umdefiniert (z.B. Dattel als ausreichender Ersatz für Süßes). Die Betonung von „lecker“ dient dazu, die zugrunde liegende Einschränkung zu relativieren.", "schlagwortRaw": "Optimierte verschleierte Disziplin und sehr restriktiv", "typCodes": [2, 4], "typPrimary": 2}, {"id": 4, "videoLink": "https://vm.tiktok.com/ZGd9uJkjs/", "videoRef": 8, "metrics": {"views": "2,6", "follower": "3,1", "gespeichert": "68.263", "likes": "261,165"}, "erstindruck": "High protein! Gain muslcles and stay lean", "zentraleBotschaft": "Das Video vermittelt, dass eine bewusste, proteinreiche Ernährung in Kombination mit Bewegung zu einem gesunden und attraktiven Körper führt und gleichzeitig genussvoll sein kann.", "wasVermitteltWird": "Die ständige Betonung von Protein und körperlichem Nutzen zeigt, dass Essen primär als Mittel zur Körperoptimierung verstanden wird.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "2", "values": [2.0], "label": "mittel"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": null, "values": [], "label": "keine Angabe"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1", "codes": [1], "labels": ["wissenschaftlich legitimiert"]}, "narrativRestriktion": {"raw": "2", "code": 2, "max": 3, "label": "teilweise konsistent"}, "koerperinszenierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["sexualisierte Pose", "Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "3", "codes": [3], "labels": ["Bezug zu Leistung"]}, "narrativKoerper": {"raw": "", "code": null, "max": 3, "label": "keine Angabe"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "Gain mscles and stay as lean as posssibke.", "interpretation": "Das Video inszeniert eine Form von funktionaler Disziplin, bei der Ernährung gezielt nach ihrem Beitrag zur körperlichen Leistungsfähigkeit und Ästhetik ausgewählt wird.", "schlagwortRaw": "1= wissenbasierte Disziplin", "typCodes": [1], "typPrimary": 1}, {"id": 5, "videoLink": "https://vm.tiktok.com/ZGd9uLj7o/", "videoRef": 9, "metrics": {"views": "612.102", "follower": "55.538", "gespeichert": "7.173", "likes": "87.252"}, "erstindruck": "realistic wIeiad", "zentraleBotschaft": "Es werden keine kalorien gezählt, also ein freies Essverhalten wird dargestellt.", "wasVermitteltWird": "Das Video vermittelt, dass eine gesunde und proteinreiche Ernährung wichtig ist, gleichzeitig aber auch spontane und genussvolle Momente Teil eines ausgewogenen Lebensstils sein können.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "0", "values": [0.0], "label": "—"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "0", "values": [0.0], "label": "—"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "3", "codes": [3], "labels": ["ausgewogen"]}, "restriktion": {"raw": "1", "code": 1, "max": 3, "label": "keine erkennbare Einschränkung"}, "kontrolle": {"raw": "1", "code": 1, "max": 3, "label": "spontan/locker"}, "disziplinNarrativ": {"raw": "4", "codes": [4], "labels": ["kein Disziplin-Narrativ"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2,3,", "codes": [2, 3], "labels": ["Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "/", "code": null, "max": 3, "label": "keine Angabe"}, "objektivierung": {"raw": "2", "codes": [2], "labels": ["Fokus auf Körperteile"]}, "fitnessKontext": {"raw": "3", "codes": [3], "labels": ["Bezug zu Leistung"]}, "narrativKoerper": {"raw": "2", "code": 2, "max": 3, "label": "neutral"}, "inszenierungsgrad": {"raw": "3", "code": 3, "max": 3, "label": "authentisch dargestellt"}, "transkript": "", "interpretation": "Grundsätzlich passt das Essverhalten zu der Aussage, dass sie nicht ihre kalorien trackt. Als Kommentar sieht man jedoch: Realistisch was ich an einem tag asl Fitnessgirl gegessen habe. Sie enhält sich also ob es das ist was se auch davor gegessen hat. Im Gegensatz zu den meisten analysierten Videos wird hier kaum eine Form von Disziplin sichtbar, wodurch das Video einen Gegenpol zu den dominanten Mustern darstellt.", "schlagwortRaw": "?", "typCodes": [0], "typPrimary": 0}, {"id": 6, "videoLink": "https://vm.tiktok.com/ZGd9mTHe8/", "videoRef": 10.5, "metrics": {"views": "806.020", "follower": "349.659", "gespeichert": "1.413", "likes": "12.392"}, "erstindruck": "zero carb diet", "zentraleBotschaft": "Die \"Zero Carb Diet\" ist eine funktionierende und legitime Ernährungsform, unabhängig von gesellschaftlicher Kritik.", "wasVermitteltWird": "Implizit wird eine hochgradig restriktive und einseitige Ernährungsweise normalisiert, bei der Vielfalt und Genuss vollständig in den Hintergrund treten. Die defensive Aussage („don’t judge“) deutet darauf hin, dass diese Praxis als potenziell kritisch wahrgenommen wird, gleichzeitig aber bewusst legitimiert wird.", "portionen": {"morgens": {"raw": "0", "values": [0.0], "label": "—"}, "snack1": {"raw": "0", "values": [0.0], "label": "—"}, "mittag": {"raw": "1", "values": [1.0], "label": "klein"}, "snack2": {"raw": "0", "values": [0.0], "label": "—"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": "0", "values": [0.0], "label": "—"}}, "ernaehrungsstruktur": {"raw": "2", "code": 2, "max": 4, "label": "weniger als drei Hauptmahlzeiten"}, "gesamtmenge": {"raw": "1", "code": 1, "max": 3, "label": "gering"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "2", "codes": [2], "labels": ["moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "0", "code": null, "max": 3, "label": "keine Angabe"}, "objektivierung": {"raw": "0", "codes": [], "labels": []}, "fitnessKontext": {"raw": "1", "codes": [1], "labels": ["Fitnesszubehör sichtbar"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "This is my hole diet… Don´t judge!", "interpretation": "Das Video stellt eine extreme Form von Ernährungsdisziplin dar, bei der Kontrolle durch maximale Einschränkung und Reduktion umgesetzt wird. Im Gegensatz zu subtileren Darstellungen wird Disziplin hier nicht verschleiert, sondern offen sichtbar. Gleichzeitig deutet die defensive Rahmung darauf hin, dass diese Form der Ernährung außerhalb des als „normal“ Wahrgenommenen liegt. Dadurch fungiert das Video als Grenzfall, der die Spannbreite disziplinierter Ernährungspraktiken aufzeigt und die moderateren, stärker normalisierten Formen von Kontrolle in anderen Videos umso deutlicher macht.", "schlagwortRaw": "4= sehr restriktuve Disziplin", "typCodes": [4], "typPrimary": 4}, {"id": 7, "videoLink": "https://vm.tiktok.com/ZGd9msowD/", "videoRef": 11, "metrics": {"views": "56.593", "follower": "248.813", "gespeichert": "835", "likes": "2.676"}, "erstindruck": "Mini- bulk to building my lower body, while staying lean and building abs - whole foods", "zentraleBotschaft": "Struktirierte proteinreiche Ernährung führt zu einem definierten Körper!", "wasVermitteltWird": "Normal essen ist funktional, es werden gezielt Regeln befolgt. Zucker wird unsichtbar gemacht und es werden nur \"gute\" lebensmittel gezeigt", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "1", "values": [1.0], "label": "klein"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "0", "values": [0.0], "label": "—"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "2.3", "codes": [2, 3], "labels": ["moralisch aufgeladen", "leistungsorientiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung", "Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "3", "code": 3, "max": 3, "label": "authentisch dargestellt"}, "transkript": "", "interpretation": "Die Ernährung wird als ausgewogen dargestellt, folgt jedoch klaren proteinorieniertern Strukturen. Körper wird als klares Ergebnis einer kontrollierten Ernährung dargestellt. Ist selbstverständlicher Bestandteil eines gesunden Lebensstil", "schlagwortRaw": "2= optimierte verschleierte Diszplin", "typCodes": [2], "typPrimary": 2}, {"id": 8, "videoLink": "https://vm.tiktok.com/ZGd9u8KeP/", "videoRef": 12, "metrics": {"views": "40.278", "follower": "3.123", "gespeichert": "466", "likes": "8.751"}, "erstindruck": "rest day, fuel, building muscles & no restriction", "zentraleBotschaft": "Man soll aufhören das natürliche Essverlangen zu unterdrücken und auch am Offday nicht zu wenig essen. Trotzdem wird sich auf ausschließlich gesunde Mahlzeiten fokussiert", "wasVermitteltWird": "Implizit wird eine Form von Disziplin trotzdem aufrecht erhalten, da ausschließlich \"cleane\" Lebensmittel gezeigt werden", "portionen": {"morgens": {"raw": "3", "values": [3.0], "label": "groß"}, "snack1": {"raw": "0", "values": [0.0], "label": "—"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "2", "values": [2.0], "label": "mittel"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "4", "code": 4, "max": 4, "label": "mehr als drei kleine Mahlzeiten"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "1", "code": 1, "max": 3, "label": "keine erkennbare Einschränkung"}, "kontrolle": {"raw": "1", "code": 1, "max": 3, "label": "spontan/locker"}, "disziplinNarrativ": {"raw": "1", "codes": [1], "labels": ["wissenschaftlich legitimiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "0", "codes": [], "labels": []}, "bauchDefinition": {"raw": "0", "code": null, "max": 3, "label": "keine Angabe"}, "objektivierung": {"raw": "0", "codes": [], "labels": []}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "I stop questioning my normal hunger cues and just feed myself. A couple years ago I definitly fell in the trap to think that eating less brings better results. (…) Today I ate like it wa smy job . I didnt track a single thing. Becuase i am not trying to shrink anymore, I try to row. But there is so much fear around carlories, portions and earning your food... It took me a long time to realise i dont need to earn my food! I am eating so I can exercise not the other way around. Its about being the happiest, strongest liveliest version of myself. I feel the best when I can have another yogurt bowl. And the freedom to eat 10 japanese eggs.", "interpretation": "Das Video inszeniert eine scheinbar freie und intuitive Ernährungsweise, die jedoch weiterhin stark durch normative Vorstellungen von „gesunder“ Ernährung geprägt ist. Disziplin wird nicht mehr über Kalorienkontrolle vermittelt, sondern über die konsequente Auswahl „guter“ Lebensmittel. Der Verzicht auf Süßigkeiten bleibt unsichtbar, wodurch eine subtile Form von Restriktion entsteht, die als natürliche und unproblematische Praxis dargestellt wird. Damit wird eine Form von „normalisierter Disziplin“ reproduziert, die weniger offensichtlich, aber dennoch wirksam ist.", "schlagwortRaw": "1= wissenbasierte Legitimierung", "typCodes": [1], "typPrimary": 1}, {"id": 9, "videoLink": "https://vm.tiktok.com/ZGd9u1qd4/", "videoRef": 13, "metrics": {"views": "94.261", "follower": "193.876", "gespeichert": "1.320", "likes": "5.570"}, "erstindruck": "wanne lose body fat and look lean and toned, high protein fat lose meals", "zentraleBotschaft": "Das Video vermittelt, dass eine proteinreiche leichte Ernährung dich dünn aaussehen lässt und dass das das Ziel ist.", "wasVermitteltWird": "Implizit wird eine restriktive Ernährungsform normalisiert, bei der geringe Portionsgrößen und eine starke Fokussierung auf Protein als selsbtverständlich erscheinen. Der Verzicht kalorienreicher oder ungesunder Ernährung wird nicht themaisiert.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": null, "values": [], "label": "keine Angabe"}, "snack3": {"raw": "0", "values": [0.0], "label": "—"}}, "ernaehrungsstruktur": {"raw": "2", "code": 2, "max": 4, "label": "weniger als drei Hauptmahlzeiten"}, "gesamtmenge": {"raw": "1", "code": 1, "max": 3, "label": "gering"}, "ernaehrungsstil": {"raw": "1.2", "codes": [1, 2], "labels": ["proteinorientiert", "kohlenhydratreduziert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Nahaufnahme einzelner Körperteile", "Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "You want to look leane and toned what you put in your body matters", "interpretation": "Das Video repräsentiert einen typischen Fall der „normalisierten Disziplin“, bei dem eine kontrollierte und restriktive Ernährung nicht als solche erscheint, sondern als alltägliche und gesunde Praxis inszeniert wird. Durch die Kombination aus kleinen Portionsgrößen und proteinorientierter Lebensmittelauswahl wird eine Form von Selbstkontrolle vermittelt, die als selbstverständlich gilt. Diese Darstellung trägt dazu bei, ein Körperideal zu stabilisieren, bei dem ein schlanker und definierter Körper als Ergebnis solcher Ernährungspraktiken verstanden wird.", "schlagwortRaw": "2= verschleierte Disziplin", "typCodes": [2], "typPrimary": 2}, {"id": 10, "videoLink": "https://vm.tiktok.com/ZGd9u8hJR/", "videoRef": 15, "metrics": {"views": "34.769", "follower": "233.423", "gespeichert": "363", "likes": "3.993"}, "erstindruck": "cutting", "zentraleBotschaft": "Wie wichtig, Disziplin ist in Form von einer cleanen Ernährung und viel Bewegung um seinen Traumkörper zu halten.", "wasVermitteltWird": "Implizit wird auch eine sehr hohe Form von Selbstkontrolle normailisiert. Das Erreichen eines bestimmten selbst vorgegebenen Zielwert erscheint als zwingend notwendig. Dadurch ist Flexibilität im Alltag kaum vorhergesehen.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "2", "codes": [2], "labels": ["moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Nahaufnahme einzelner Körperteile", "Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1.2", "codes": [1, 2], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "I am currently on a meal plan, because it makes it so much easier to stick to it in my opinion.", "interpretation": "Das Video stellt eine ausgeprägte Form von Disziplin dar, bei dem der Alltag einschließlich spontane Aktivitäten wie ein Spaziergang an vorgegeben Zielwerten ausgerichtet wird. Es wird ein Verständis von Selbstoptimierung vermittelt, bei dem der Körper als koninuierliches zu regulierendes Projekt erscheint.", "schlagwortRaw": "4= restriktive Diszolin, Ernährung und Bewegungdehr stariekontreolliert", "typCodes": [4], "typPrimary": 4}, {"id": 11, "videoLink": "https://vm.tiktok.com/ZGd9mnWvD/", "videoRef": 16, "metrics": {"views": "86.571", "follower": "132.674", "gespeichert": "1.864", "likes": "6.720"}, "erstindruck": "Gain weight, high protein diet", "zentraleBotschaft": "Das Video vermittelt, dass man auch beim Zunehmen ausgewogen essen kann und keine Angst vor Kohlenhydraten haben muss, solange die Ernährung insgesamt zielgerichtet bleibt.", "wasVermitteltWird": "Trotz der Betonung von Offenheit gegenüber Kohlenhydraten bleibt die Ernährung stark reguliert. „Erlaubte“ Lebensmittel wie Pasta werden integriert, jedoch innerhalb eines klar strukturierten und zielorientierten Rahmens. Gleichzeitig werden Süßigkeiten weiterhin durch „gesunde“ Alternativen ersetzt.  Disziplin zeigt sich hier in der konsequenten Ausrichtung auf Nährstoffziele und der Kontrolle der Lebensmittelauswahl.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "1", "values": [1.0], "label": "klein"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "2", "values": [2.0], "label": "mittel"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "3", "codes": [3], "labels": ["freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung", "Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "\"I literally was so tired, but I wanted to reach my protein goal.\"", "interpretation": "Das Video inszeniert eine Form von kontrollierter Flexibilität, bei der scheinbare Freiheit („keine Angst vor Carbs“) mit einer weiterhin stark regulierten Ernährungsweise kombiniert wird. Diese Darstellung wirkt weniger restriktiv als klassische Diätformen, stabilisiert jedoch weiterhin normative Vorstellungen von „richtiger“ Ernährung durch die Bevorzugung bestimmter Lebensmittel und die Ausrichtung auf konkrete Ziele wie Proteinaufnahme. Disziplin wird dabei nicht aufgehoben, sondern modernisiert: Sie erscheint als flexible, aber dennoch konsequent durchgehaltene Praxis der Selbstoptimierung.", "schlagwortRaw": "2= optimierte verscheleierte Disziplin", "typCodes": [2], "typPrimary": 2}, {"id": 12, "videoLink": "https://vm.tiktok.com/ZGd9mWNuF/", "videoRef": 17, "metrics": {"views": "66.360", "follower": "1.344", "gespeichert": "189", "likes": "2.000"}, "erstindruck": "Realistic , High protein and whole foods focused", "zentraleBotschaft": "Das Video vermittelt, dass eine bewusste und gesunde Ernährung auch an Rest Days notwendig ist und durch wissenschaftlich fundierte Entscheidungen optimiert werden kann.", "wasVermitteltWird": "Das Video vermittelt, dass eine bewusste und gesunde Ernährung auch an Rest Days notwendig ist und durch wissenschaftlich fundierte Entscheidungen optimiert werden kann.", "portionen": {"morgens": {"raw": "1", "values": [1.0], "label": "klein"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": null, "values": [], "label": "keine Angabe"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "1", "code": 1, "max": 3, "label": "gering"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "1", "codes": [1], "labels": ["wissenschaftlich legitimiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "3", "code": 3, "max": 3, "label": "extrem definiert"}, "objektivierung": {"raw": "3", "codes": [3], "labels": ["freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "If I find a meal I like I will eat it on repeat for months and this is me with this breakfast.", "interpretation": "Das Video kombiniert wissenschaftliche Autorität mit einer subtil restriktiven Ernährungsweise. Disziplin wird hier nicht als moralische oder leistungsbezogene Kategorie inszeniert, sondern als rational begründete Notwendigkeit. Durch die professionelle Rolle der Influencerin wird die gezeigte Ernährung zusätzlich legitimiert und erscheint als objektiv „richtig“. Gleichzeitig bleibt die Restriktion unsichtbar, da sie in Form von gesunden Alternativen und scheinbar ausreichender Ernährung vermittelt wird. Dadurch wird eine Form von disziplinierter Ernährung stabilisiert, die sich durch wissenschaftliche Argumentation besonders überzeugend darstellt.", "schlagwortRaw": "1/4= restriktive wissenbasierte Disziplin.", "typCodes": [1, 4], "typPrimary": 1}, {"id": 13, "videoLink": "https://vm.tiktok.com/ZGd9uNoKG/", "videoRef": 18, "metrics": {"views": "11.818", "follower": "284.222", "gespeichert": "51", "likes": "1.617"}, "erstindruck": "gymgirl who isn´t restricting herself", "zentraleBotschaft": "Das Video vermittelt, dass man sich nicht einschränken muss, um fit zu sein, und dass eine flexible, genussorientierte Ernährung möglich ist.", "wasVermitteltWird": "Weniger restriktive Ernährung, da auch ungesundere Nahrung gezeigt wird, wie ein Burger vorm Training. Die Logik von Disziplin wird also ein wenig aufgebrochen, da die Influencerin trotzdem fit aussieht.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "2", "values": [2.0], "label": "mittel"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "3", "code": 3, "max": 3, "label": "hoch"}, "ernaehrungsstil": {"raw": "1.4", "codes": [1, 4], "labels": ["proteinorientiert", "kalorienreich"]}, "restriktion": {"raw": "1", "code": 1, "max": 3, "label": "keine erkennbare Einschränkung"}, "kontrolle": {"raw": "1", "code": 1, "max": 3, "label": "spontan/locker"}, "disziplinNarrativ": {"raw": "4", "codes": [4], "labels": ["kein Disziplin-Narrativ"]}, "narrativRestriktion": {"raw": "", "code": null, "max": 3, "label": "keine Angabe"}, "koerperinszenierung": {"raw": "0", "codes": [], "labels": []}, "bauchDefinition": {"raw": "0", "code": null, "max": 3, "label": "keine Angabe"}, "objektivierung": {"raw": "0", "codes": [], "labels": []}, "fitnessKontext": {"raw": "3", "codes": [3], "labels": ["Bezug zu Leistung"]}, "narrativKoerper": {"raw": "2", "code": 2, "max": 3, "label": "neutral"}, "inszenierungsgrad": {"raw": "3", "code": 3, "max": 3, "label": "authentisch dargestellt"}, "transkript": "", "interpretation": "Das Video stellt einen Kontrast zu den überwiegend disziplinierten Ernährungsdarstellungen dar, da hier eine deutlich freiere und genussorientierte Praxis gezeigt wird. Im Unterschied zu anderen Fällen wird Disziplin nicht über Kontrolle oder Verzicht vermittelt, sondern teilweise zurückgenommen. Gleichzeitig bleibt die Verbindung zwischen Körper und Ernährung bestehen, sodass die gezeigte Freiheit nicht vollständig von normativen Erwartungen entkoppelt ist. Dadurch fungiert das Video als wichtiger Gegenpol, der die dominanten Muster der „normalisierten Disziplin“ sichtbar macht.", "schlagwortRaw": "5= Ggegenfall, relativ freies Essverhalten", "typCodes": [5], "typPrimary": 5}, {"id": 14, "videoLink": "https://vm.tiktok.com/ZGd9mceJE/", "videoRef": 19, "metrics": {"views": "59.764", "follower": "1,2 Mio", "gespeichert": "793", "likes": "6.823"}, "erstindruck": "goal to lean up, tone up and have a healthy and balanced relationship with food.", "zentraleBotschaft": "Das Video vermittelt, dass man durch eine ausgewogene, proteinreiche Ernährung einen definierten Körper erreichen kann, ohne eine ungesunde Beziehung zum Essen zu entwickeln.", "wasVermitteltWird": "Implizit wird eine kontrollierte Ernährungsweise vermittelt, die als „balanced“ dargestellt wird. Obwohl keine extreme Restriktion sichtbar ist, erfolgt eine klare Auswahl „richtiger“ Lebensmittel, während klassische Süßigkeiten vermieden werden. Die Ernährung ist damit weniger offensichtlich restriktiv, bleibt jedoch an bestimmte Regeln und Zielvorstellungen gebunden. Disziplin erscheint hier als Teil einer gesunden und normalen Beziehung zum Essen.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "0.5", "values": [0.5], "label": "Getränk"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "2", "values": [2.0], "label": "mittel"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "0", "code": null, "max": 3, "label": "keine Angabe"}, "objektivierung": {"raw": "0", "codes": [], "labels": []}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "My goal is to lean out, tone up and have a healthy and balanced relationship with food.", "interpretation": "Das Video inszeniert eine Form von moderater, subtiler Disziplin, bei der Kontrolle nicht als Einschränkung, sondern als Bestandteil eines gesunden Lebensstils dargestellt wird.", "schlagwortRaw": "1/2= ptimierte verschelierte Disziplin verbunden mit einer wissenbasierten Disziplin", "typCodes": [1, 2], "typPrimary": 1}, {"id": 15, "videoLink": "https://vm.tiktok.com/ZGd9mE6TJ/", "videoRef": 20, "metrics": {"views": "82.812", "follower": "120.528", "gespeichert": "1.097", "likes": "6.175"}, "erstindruck": "to build muscles and stay lean", "zentraleBotschaft": "Das Video vermittelt, dass eine gezielte und kontrollierte Ernährungsstrategie notwendig ist, um einen definierten Körper zu erreichen und diesen langfristig zu halten, selbst wenn die Kalorienzufuhr erhöht wird.", "wasVermitteltWird": "Implizit wird eine hochgradig kontrollierte Ernährungsweise normalisiert, bei der selbst Phasen der Kaloriensteigerung präzise gesteuert werden. Der stark definierte Körper fungiert als visuelle Legitimation dieser Praxis. Gleichzeitig wird „Genuss“ stark eingeschränkt und nur in minimaler Form erlaubt, wodurch eine klare Trennung zwischen „richtigen“ und „abweichenden“ Lebensmitteln bestehen bleibt. Disziplin zeigt sich hier besonders deutlich durch kontinuierliches Tracking und die permanente Ausrichtung an körperlichen Zielen.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "1", "values": [1.0], "label": "klein"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "1.23", "codes": [1, 2, 3], "labels": ["Nahaufnahme einzelner Körperteile", "Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "3", "code": 3, "max": 3, "label": "extrem definiert"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "", "interpretation": "Das Video stellt eine intensive Form von disziplinierter Selbstoptimierung dar, bei der Ernährung als exakt steuerbares Instrument zur Körperformung eingesetzt wird. Durch die Kombination aus sichtbarer Körperinszenierung und strategischer Ernährungsplanung wird der Körper als Ergebnis präziser Kontrolle präsentiert. Gleichzeitig wird Disziplin durch kleine Zugeständnisse („guilty pleasure“) scheinbar aufgelockert, ohne die grundlegende Struktur der Kontrolle infrage zu stellen. Dadurch entsteht eine Form von „maximierter Disziplin“, die durch minimale Flexibilität ergänzt wird, aber insgesamt stark normativ wirkt.", "schlagwortRaw": "4= sehr rstriktive Disziplin", "typCodes": [4], "typPrimary": 4}, {"id": 16, "videoLink": "https://vm.tiktok.com/ZGd9u87Gb/", "videoRef": 21, "metrics": {"views": "28.117", "follower": "18.312", "gespeichert": "86", "likes": "1.567"}, "erstindruck": "gaining weight journey", "zentraleBotschaft": "Das Video vermittelt, dass eine gezielte und professionelle Steuerung der Ernährung notwendig ist, um gesund zuzunehmen.", "wasVermitteltWird": "Implizit wird eine Form von kontrollierter und externer Disziplin vermittelt, bei der Ernährung nicht intuitiv, sondern nach festen Vorgaben angepasst wird. Obwohl das Ziel Gewichtszunahme ist, bleibt die Ernährung stark reguliert und an klare Regeln gebunden. Disziplin zeigt sich hier nicht durch Verzicht, sondern durch die konsequente Einhaltung eines strukturierten Plans.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "0", "code": null, "max": 3, "label": "keine Angabe"}, "objektivierung": {"raw": "0", "codes": [], "labels": []}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "", "interpretation": "Das Video stellt eine Form von professionell angeleiteter Disziplin dar, bei der Ernährung als planbare und steuerbare Praxis erscheint. Durch die Zusammenarbeit mit einem Diätisten wird die Kontrolle über die Ernährung legitimiert und als notwendig für gesundheitliche Ziele präsentiert. Auch hier wird deutlich, dass Disziplin unabhängig vom Ziel (Abnahme oder Zunahme) eine zentrale Rolle spielt. Der Körper erscheint als etwas, das durch gezielte und kontrollierte Eingriffe optimiert werden kann.", "schlagwortRaw": "4= restriktive Diszipkin", "typCodes": [4], "typPrimary": 4}, {"id": 17, "videoLink": "https://vm.tiktok.com/ZGd9mo1vj/", "videoRef": 22, "metrics": {"views": "25.651", "follower": "23.175", "gespeichert": "626", "likes": "1.230"}, "erstindruck": "high protein + wholefoods", "zentraleBotschaft": "Das Video vermittelt, dass eine ausgewogene und gesunde Ernährung möglich ist, wenn man bewusst Lebensmittel auswählt und deren Nutzen versteht.", "wasVermitteltWird": "Implizit wird eine stark regulierte Ernährungsweise als „balanced“ dargestellt, obwohl die Auswahl der Lebensmittel sehr eingeschränkt und gesundheitsorientiert ist. Genuss wird umdefiniert, indem bereits kleine Mengen natürlicher Süße als „Dessert“ gelten. Durch die ständige funktionale Erklärung der Lebensmittel wird Essen primär als Mittel zur Optimierung des Körpers dargestellt. Der sehr definierte Körper fungiert dabei als visuelle Bestätigung dieser Ernährungsweise. Disziplin wird hier über Wissen und Kontrolle legitimiert und erscheint als rational und notwendig.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": null, "values": [], "label": "keine Angabe"}}, "ernaehrungsstruktur": {"raw": "2", "code": 2, "max": 4, "label": "weniger als drei Hauptmahlzeiten"}, "gesamtmenge": {"raw": "1", "code": 1, "max": 3, "label": "gering"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "3", "code": 3, "max": 3, "label": "extrem definiert"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "3", "codes": [3], "labels": ["Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "Nothing extreme just basic meals that support my goals and keep me consistent.", "interpretation": "Das Video inszeniert eine Form von wissenschaftlich begründeter und gleichzeitig ästhetisch orientierter Disziplin, bei der Ernährung als gezielt steuerbares Instrument zur Körperoptimierung verstanden wird. Die Bezeichnung als „balanced“ verschleiert dabei die tatsächliche Einschränkung der Lebensmittelauswahl und trägt zur Normalisierung dieser Praxis bei. Durch die Kombination aus Expertenwissen, körperlicher Inszenierung und kontrolliertem Genuss entsteht eine besonders überzeugende Darstellung von Disziplin, die sowohl rational als auch visuell legitimiert wird.", "schlagwortRaw": "1/4= wissenbasierte Disziplin und restriktive Disziplin", "typCodes": [1, 4], "typPrimary": 1}, {"id": 18, "videoLink": "https://vm.tiktok.com/ZGd9uJPxU/", "videoRef": 23, "metrics": {"views": "64.321", "follower": "23.687", "gespeichert": "1.333", "likes": "3.873"}, "erstindruck": "In a calorie deficit. Lose body fat and stay in a caloriedeficit", "zentraleBotschaft": "Das Video vermittelt, dass eine konsequente und strukturierte Ernährung während eines Cuts effektiv ist und sich positiv auf das eigene Wohlbefinden und den Körper auswirkt.", "wasVermitteltWird": "Implizit wird eine hochgradig restriktive und repetitive Ernährungsweise normalisiert, bei der Variation zugunsten von Kontrolle reduziert wird. Die starke körperliche Veränderung dient als visuelle Bestätigung dieser Praxis. Besonders auffällig ist, dass Disziplin nicht als belastend, sondern als positiv und energiegebend dargestellt wird („fühle mich super gut“).", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "2", "values": [2.0], "label": "mittel"}, "mittag": {"raw": "1", "values": [1.0], "label": "klein"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "2", "codes": [2], "labels": ["moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "3", "code": 3, "max": 3, "label": "extrem definiert"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1.3", "codes": [1, 3], "labels": ["Fitnesszubehör sichtbar", "Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "I a defntly getteing close to my cut, was is so crazy to me. I feel like I just started last week and all of the sudden I feel so good in my body.", "interpretation": "Das Video inszeniert eine intensive Form von disziplinierter Selbstoptimierung, bei der Ernährung durch Wiederholung und klare Struktur maximal kontrollierbar gemacht wird. Der Körper fungiert als sichtbares Ergebnis dieser Disziplin und legitimiert die gezeigte Praxis. Besonders relevant ist die positive emotionale Rahmung, durch die die restriktive Ernährungsweise nicht als Verzicht, sondern als Quelle von Wohlbefinden dargestellt wird. Dadurch wird ein Ideal stabilisiert, in dem Disziplin nicht nur notwendig, sondern auch wünschenswert und belohnend erscheint.", "schlagwortRaw": "4= restriktive Disziplin", "typCodes": [4], "typPrimary": 4}, {"id": 19, "videoLink": "https://vm.tiktok.com/ZGd9uNTCd/", "videoRef": 24, "metrics": {"views": "25.664", "follower": "2,3 Mio", "gespeichert": "234", "likes": "1.469"}, "erstindruck": "Um keinen Blähbauch zu haben", "zentraleBotschaft": "Das Video vermittelt, dass eine gezielte Ernährung und ein gesunder Lebensstil entscheidend für Darmgesundheit, Leistungsfähigkeit und körperliches Wohlbefinden sind.", "wasVermitteltWird": "Implizit wird eine stark kontrollierte Ernährungsweise durch gesundheitliche Argumente legitimiert. Der Fokus auf Darmgesundheit und Supplements verstärkt den Eindruck, dass Ernährung optimiert und gezielt gesteuert werden muss. Gleichzeitig bleibt die Restriktion unsichtbar, da sie als „gesund“ und notwendig dargestellt wird. Der sehr definierte Körper fungiert als visuelle Bestätigung dieser Praxis und verbindet Gesundheit, Leistungsfähigkeit und ein schlankes Erscheinungsbild.", "portionen": {"morgens": {"raw": "0.5", "values": [0.5], "label": "Getränk"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": null, "values": [], "label": "keine Angabe"}}, "ernaehrungsstruktur": {"raw": "2", "code": 2, "max": 4, "label": "weniger als drei Hauptmahlzeiten"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1.3", "codes": [1, 3], "labels": ["proteinorientiert", "ausgewogen"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1", "codes": [1], "labels": ["wissenschaftlich legitimiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung", "Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "Das esse ich an einem Tag während ich ganz gezielt auf meine Darmgesundheit achte. Ihr kennt das alle der Darm ist einfach die Basis für unser Wohlbefinden.", "interpretation": "Das Video stellt eine Form von gesundheitlich legitimierter Disziplin dar, bei der Ernährung als zentrales Instrument zur Optimierung von Körper und Wohlbefinden verstanden wird. Durch die Verknüpfung von Darmgesundheit, Leistungsfähigkeit und äußerem Erscheinungsbild wird ein Ideal erzeugt, bei dem ein sehr schlanker und definierter Körper als Ausdruck von Gesundheit erscheint. Gleichzeitig wird die restriktive Ernährungsweise durch den Gesundheitsdiskurs normalisiert und entproblematisiert. Disziplin wird hier nicht als Einschränkung, sondern als notwendige Voraussetzung für ein funktionierendes und leistungsfähiges Selbst dargestellt.", "schlagwortRaw": "1= wissenbasierte Disziplin, 4= restriktive Disziplin", "typCodes": [1, 4], "typPrimary": 1}, {"id": 20, "videoLink": "https://vm.tiktok.com/ZGd9uJNe3/", "videoRef": 25, "metrics": {"views": "45.836", "follower": "421.721", "gespeichert": "527", "likes": "4.792"}, "erstindruck": "Your body can not glow without fat.", "zentraleBotschaft": "Das Video vermittelt, dass eine gesunde und proteinreiche Ernährung wichtig ist, gleichzeitig aber auch spontane und genussvolle Momente Teil eines ausgewogenen Lebensstils sein können.", "wasVermitteltWird": "Das Video vermittelt, dass eine gesunde und proteinreiche Ernährung wichtig ist, gleichzeitig aber auch spontane und genussvolle Momente Teil eines ausgewogenen Lebensstils sein können.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "0.5", "values": [0.5], "label": "Getränk"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": null, "values": [], "label": "keine Angabe"}}, "ernaehrungsstruktur": {"raw": "2", "code": 2, "max": 4, "label": "weniger als drei Hauptmahlzeiten"}, "gesamtmenge": {"raw": "1", "code": 1, "max": 3, "label": "gering"}, "ernaehrungsstil": {"raw": "3", "codes": [3], "labels": ["ausgewogen"]}, "restriktion": {"raw": "1", "code": 1, "max": 3, "label": "keine erkennbare Einschränkung"}, "kontrolle": {"raw": "1", "code": 1, "max": 3, "label": "spontan/locker"}, "disziplinNarrativ": {"raw": "1", "codes": [1], "labels": ["wissenschaftlich legitimiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "1.3", "codes": [1, 3], "labels": ["sexualisierte Pose", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "Your physic wont change, your skin sucks, your energy is always low….", "interpretation": "Das Video inszeniert eine Balance zwischen Disziplin und Freiheit, bei der Kontrolle die Grundlage bildet und Flexibilität nur innerhalb bestimmter Grenzen zugelassen wird. Diese Darstellung wirkt besonders anschlussfähig, da sie weniger restriktiv erscheint als strikt kontrollierte Ernährungsweisen, gleichzeitig aber weiterhin klare normative Vorstellungen von „richtiger“ Ernährung reproduziert. Disziplin wird hier nicht aufgehoben, sondern als flexible und alltagstaugliche Praxis neu gerahmt, die mit Genuss vereinbar scheint, ohne die grundlegende Struktur der Kontrolle infrage zu stellen.", "schlagwortRaw": "2= optimierte verschleierte disziplin", "typCodes": [2], "typPrimary": 2}, {"id": 21, "videoLink": "https://vm.tiktok.com/ZGd9u1gy6/", "videoRef": 26, "metrics": {"views": "394.582", "follower": "316.930", "gespeichert": "3.832", "likes": "20.133"}, "erstindruck": "intuitiv, gym girl, diät", "zentraleBotschaft": "Das Video vermittelt, dass man einen definierten und ästhetischen Körper erreichen kann, ohne sich stark einzuschränken, solange man „clever“ und ausgewogen isst.", "wasVermitteltWird": "Implizit wird eine kontrollierte Ernährungsweise vermittelt, die als entspannt und flexibel erscheint, jedoch weiterhin auf bestimmten Prinzipien basiert. Klassische Genussmittel werden nicht vollständig integriert, sondern durch „gesündere“ Alternativen ersetzt (z.B. Protein-Schokolade). Dadurch bleibt eine klare Unterscheidung zwischen „richtigen“ und „weniger erwünschten“ Lebensmitteln bestehen. Der Körper fungiert als zentrales Argument für die Wirksamkeit dieser Ernährungsweise.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "1", "values": [1.0], "label": "klein"}, "mittag": {"raw": "1", "values": [1.0], "label": "klein"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": null, "values": [], "label": "keine Angabe"}}, "ernaehrungsstruktur": {"raw": "1", "code": 1, "max": 4, "label": "drei Hauptmahlzeiten"}, "gesamtmenge": {"raw": "1", "code": 1, "max": 3, "label": "gering"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "3", "codes": [3], "labels": ["leistungsorientiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1.2", "codes": [1, 2], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "Was isst du eigentlich den ganzen Tag um so einen schönen Körper zu haben? Leute tranquillo, ich zeigs euch!", "interpretation": "Das Video inszeniert eine Form von subtiler Disziplin, bei der Kontrolle nicht als Einschränkung wahrgenommen wird, sondern als Teil eines ausgewogenen Lebensstils erscheint. Durch die Integration scheinbar genussvoller Elemente wird die Ernährungsweise zugänglicher dargestellt, während die zugrunde liegende Struktur der Kontrolle erhalten bleibt. Der Körper dient dabei als visuelle Legitimation und verstärkt die Botschaft, dass diese Form der „balancierten“ Ernährung zu einem ästhetisch idealisierten Körper führt. Dadurch wird Disziplin in eine alltagstaugliche und erstrebenswerte Form überführt.", "schlagwortRaw": "2= optimierte Diszilin", "typCodes": [2], "typPrimary": 2}, {"id": 22, "videoLink": "https://vm.tiktok.com/ZGd9mTACL/", "videoRef": 30, "metrics": {"views": "159.431", "follower": "436.873", "gespeichert": "1.814", "likes": "11.353"}, "erstindruck": "I lost over 30 pouds…", "zentraleBotschaft": "Das Video vermittelt, dass langfristiger Erfolg durch eine konsequente und durchhaltbare Ernährungsweise erreicht wird, bei der es wichtig ist, Routinen zu entwickeln und konstant zu bleiben.", "wasVermitteltWird": "Implizit wird eine stark kontrollierte und restriktive Ernährungsweise als Schlüssel zum Erfolg normalisiert. Die Betonung von „Konsistenz“ verschleiert dabei, dass diese durch monotone und eingeschränkte Ernährung erreicht wird. Der Verzicht auf bestimmte Lebensmittel wird nicht thematisiert, wodurch die Restriktion unsichtbar bleibt. Der transformierte Körper fungiert als eindeutiger Beweis für die Wirksamkeit dieser Disziplin.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "0,5+1", "values": [0.5, 1.0], "label": "Getränk + klein"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "2", "codes": [2], "labels": ["moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2,3,5", "codes": [2, 3, 5], "labels": ["Ganzkörperdarstellung", "dynamische Pose", "Vergleich (Vorher-Nachher)"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1.2", "codes": [1, 2], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "I lost about 30 pounds and this is the part no one talks about. It´s how do you succesfully maintain thta weight loss, without backtraking and gaining it all back. Me personally I eat in a way, that I can repeat without overthinking it.", "interpretation": "Das Video stellt Disziplin vor allem als Fähigkeit zur langfristigen Aufrechterhaltung von Routinen dar. Durch die Betonung von Konsistenz wird eine Ernährungsweise legitimiert, die stark auf Wiederholung und Kontrolle basiert. Die Transformation des Körpers dient als visuelle Bestätigung und verstärkt die normative Botschaft, dass solche Formen der Selbstdisziplin notwendig sind, um ein bestimmtes Körperideal zu erreichen. Disziplin erscheint hier weniger als kurzfristiger Verzicht, sondern als dauerhafte Lebensweise.", "schlagwortRaw": "4= restriktive Disziplin durch starke Kontrolle und Wiederholung", "typCodes": [4], "typPrimary": 4}, {"id": 23, "videoLink": "https://vm.tiktok.com/ZGd9uNyyu/", "videoRef": 31, "metrics": {"views": "180.862", "follower": "188.777", "gespeichert": "5.871", "likes": "14.013"}, "erstindruck": "clean food, high protein, balanced", "zentraleBotschaft": "Das Video vermittelt, dass eine gesunde, selbstgekochte und nährstoffreiche Ernährung in Kombination mit regelmäßigem Training zu einem ästhetischen und leistungsfähigen Körper führt.", "wasVermitteltWird": "Implizit wird eine stark gesundheits- und leistungsorientierte Ernährungsweise normalisiert, bei der „cleane“ und nährstoffreiche Lebensmittel im Vordergrund stehen. Auch wenn ein süßes Element integriert wird, bleibt die Grundstruktur der Ernährung kontrolliert und zielgerichtet. Der Körper wird durch die Inszenierung im engen Outfit als Ergebnis dieser Lebensweise präsentiert. Disziplin zeigt sich hier in der konsequenten Orientierung an Gesundheit, Training und bewusster Lebensmittelauswahl.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1.3", "codes": [1, 3], "labels": ["proteinorientiert", "ausgewogen"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "0", "code": null, "max": 3, "label": "keine Angabe"}, "objektivierung": {"raw": "0", "codes": [], "labels": []}, "fitnessKontext": {"raw": "3", "codes": [3], "labels": ["Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "This is my yogurt homemade chiaseed bowl: protein, antioxidantions, fiber. This is so helathy and keeps me full for a pretty long time.", "interpretation": "Das Video inszeniert eine Form von ästhetisch und gesundheitlich begründeter Disziplin, bei der Ernährung als Teil eines umfassenden Lebensstils aus Training, Selbstoptimierung und Körperpflege verstanden wird.", "schlagwortRaw": "1= wssenbasierte Dsziplin und 4 = retsriktive Diszin", "typCodes": [1, 4], "typPrimary": 1}, {"id": 24, "videoLink": "https://vm.tiktok.com/ZGd9mGqkw/", "videoRef": 33, "metrics": {"views": "300.268", "follower": "193.878", "gespeichert": "5.019", "likes": "31.402"}, "erstindruck": "high protein, wholefoods, easy", "zentraleBotschaft": "Das Video vermittelt, dass ein gesunder Start ins neue Jahr durch eine bewusste Ernährung und regelmäßiges Training erreicht werden kann.", "wasVermitteltWird": "Implizit wird eine standardisierte Vorstellung von „gesunder“ Ernährung und Lebensweise vermittelt, die auf Protein, unverarbeiteten Lebensmitteln und Training basiert. Der Körper dient als visuelle Bestätigung dieser Praxis. Disziplin erscheint hier als grundlegende Voraussetzung für einen erfolgreichen und „richtigen“ Start ins neue Jahr und wird als selbstverständlich vorausgesetzt.", "portionen": {"morgens": {"raw": "0.5", "values": [0.5], "label": "Getränk"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "1", "values": [1.0], "label": "klein"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "2", "code": 2, "max": 4, "label": "weniger als drei Hauptmahlzeiten"}, "gesamtmenge": {"raw": "1", "code": 1, "max": 3, "label": "gering"}, "ernaehrungsstil": {"raw": "1.3", "codes": [1, 3], "labels": ["proteinorientiert", "ausgewogen"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "1.2", "codes": [1, 2], "labels": ["wissenschaftlich legitimiert", "moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Nahaufnahme einzelner Körperteile", "Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "2", "codes": [2], "labels": ["Training/Bewegung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "I try to choose food that is nutrion densed, so I know how much protein I am getting in for the day.", "interpretation": "Disziplin wird hier als normaler Bestandteil eines gesunden Alltags etabliert und nicht als besondere Anstrengung hervorgehoben.", "schlagwortRaw": "2= opt9mierte Disziplin", "typCodes": [2], "typPrimary": 2}, {"id": 25, "videoLink": null, "videoRef": 35, "metrics": {"views": "177.608", "follower": "10.329", "gespeichert": "2.988", "likes": "15.964"}, "erstindruck": "To build muscles and feel my best", "zentraleBotschaft": "Das Video vermittelt, dass man viel essen, Muskeln aufbauen und gleichzeitig lean bleiben kann, wenn man sich bewusst und gesund ernährt.", "wasVermitteltWird": "Implizit wird eine restriktive und kontrollierte Ernährungsweise vermittelt, die im Widerspruch zur Selbstbeschreibung steht. Trotz der Aussage, viel zu essen, wirkt die tatsächliche Nahrungsaufnahme begrenzt und stark strukturiert. Die Abwesenheit „ungesunder“ Lebensmittel und die unregelmäßige Mahlzeitenstruktur deuten auf eine funktionale und zielgerichtete Ernährung hin. Disziplin wird hier verschleiert, indem sie als „viel essen“ und entspannt dargestellt wird.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "0,5+ 1+1", "values": [0.5, 1.0, 1.0], "label": "Getränk + klein + klein"}, "mittag": {"raw": null, "values": [], "label": "keine Angabe"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "2", "code": 2, "max": 4, "label": "weniger als drei Hauptmahlzeiten"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1.3", "codes": [1, 3], "labels": ["wissenschaftlich legitimiert", "leistungsorientiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "2", "code": 2, "max": 3, "label": "klar definiert (Sixpack sichtbar)"}, "objektivierung": {"raw": "2", "codes": [2], "labels": ["Fokus auf Körperteile"]}, "fitnessKontext": {"raw": "2.3", "codes": [2, 3], "labels": ["Training/Bewegung", "Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "3", "code": 3, "max": 3, "label": "authentisch dargestellt"}, "transkript": "Here is everthing that I eat n a day as a girl that eats a lot of food and loves to eat and wants to build muscles while staying relativly lean… I don´t really know.", "interpretation": "Der stark definierte Körper fungiert als visuelle Legitimation dieser Praxis und verstärkt die Glaubwürdigkeit der dargestellten Ernährungsweise. Dadurch entsteht ein verzerrtes Bild von „viel essen“, das weiterhin an strenge normative Vorstellungen von Ernährung und Körper gebunden ist.", "schlagwortRaw": "2= optimierte verschleierte Disziplin", "typCodes": [2], "typPrimary": 2}, {"id": 26, "videoLink": null, "videoRef": 36, "metrics": {"views": "265.838", "follower": "599.242", "gespeichert": "4.299", "likes": "28.476"}, "erstindruck": "160g protein, 2100 calories as an active 29 years old", "zentraleBotschaft": "Das Video vermittelt, dass eine disziplinierte, proteinreiche Ernährung notwendig ist, um einen definierten und gesunden Körper zu erreichen, wobei kleine Ausnahmen möglich sind.", "wasVermitteltWird": "Implizit wird eine stark kontrollierte Ernährungsweise vermittelt, bei der klare Zielvorgaben (z.B. Proteinmenge) den Alltag bestimmen. Gleichzeitig wird Genuss als begrenzt und potenziell regelüberschreitend dargestellt („vielleicht ausnahmsweise“). Der Vergleich mit anderen (die mehr essen) verstärkt die eigene Disziplin. Dadurch entsteht eine Hierarchie, in der kontrolliertes Essverhalten als überlegen erscheint.", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "1", "codes": [1], "labels": ["wissenschaftlich legitimiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "3", "codes": [3], "labels": ["dynamische Pose"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "3", "codes": [3], "labels": ["freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1.2", "codes": [1, 2], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "I always have some version of this everday because it keeps me full, with 27 grams of protein and it just tastes so good.", "interpretation": "Genuss erscheint als Ausnahme, die bewusst reguliert werden muss. Der Körper fungiert als sichtbares Ergebnis dieser Selbstkontrolle und legitimiert die Einschränkung. Dadurch wird ein Ideal vermittelt, in dem Disziplin nicht nur notwendig, sondern auch moralisch überlegen erscheint.", "schlagwortRaw": "4= restriktive Disziplin", "typCodes": [4], "typPrimary": 4}, {"id": 27, "videoLink": null, "videoRef": 37, "metrics": {"views": "428.424", "follower": "977.727", "gespeichert": "3.768", "likes": "31.169"}, "erstindruck": "intuitivly, binge eating, loves working out+whole foods", "zentraleBotschaft": "", "wasVermitteltWird": "", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "2+2", "values": [2.0, 2.0], "label": "mittel + mittel"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "0.5", "values": [0.5], "label": "Getränk"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "", "code": null, "max": 3, "label": "keine Angabe"}, "ernaehrungsstil": {"raw": "1", "codes": [1], "labels": ["proteinorientiert"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1.3", "codes": [1, 3], "labels": ["wissenschaftlich legitimiert", "leistungsorientiert"]}, "narrativRestriktion": {"raw": "", "code": null, "max": 3, "label": "keine Angabe"}, "koerperinszenierung": {"raw": "", "codes": [], "labels": []}, "bauchDefinition": {"raw": "", "code": null, "max": 3, "label": "keine Angabe"}, "objektivierung": {"raw": "", "codes": [], "labels": []}, "fitnessKontext": {"raw": "", "codes": [], "labels": []}, "narrativKoerper": {"raw": "", "code": null, "max": 3, "label": "keine Angabe"}, "inszenierungsgrad": {"raw": "", "code": null, "max": 3, "label": "keine Angabe"}, "transkript": "", "interpretation": "", "schlagwortRaw": "", "typCodes": [0], "typPrimary": 0}, {"id": 28, "videoLink": null, "videoRef": 38, "metrics": {"views": "111.133", "follower": "511.158", "gespeichert": "1.569", "likes": "15.900"}, "erstindruck": "trying to build muscles while actually enjoying the meal she eats", "zentraleBotschaft": "Das Video vermittelt, dass eine proteinreiche Ernährung zum Muskelaufbau einfach, lecker und alltagstauglich sein kann, wenn man die „richtigen“ Lebensmittel auswählt.", "wasVermitteltWird": "Implizit wird eine weiterhin stark kontrollierte Ernährungsweise vermittelt, die jedoch als unkompliziert und selbstverständlich dargestellt wird. Die Auswahl der Lebensmittel bleibt eingeschränkt auf „cleane“ und funktionale Optionen, während klassische Genussmittel fehlen. Disziplin wird hier nicht sichtbar gemacht, sondern als bereits internalisierte Routine präsentiert („es ist leicht“). Dadurch erscheint eine regulierte Ernährungsweise als natürlicher Zustand", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": "1", "values": [1.0], "label": "klein"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1.3", "codes": [1, 3], "labels": ["proteinorientiert", "ausgewogen"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "1", "codes": [1], "labels": ["wissenschaftlich legitimiert"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "3", "codes": [3], "labels": ["freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung", "Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "I used to think all protein foods where disgusting. And no wonder, my diet consistet soly ofcaramel flavoured grit on the most diabolic protein bars known to man. Now thankfully I know eating to build muscles is actually very easy.", "interpretation": "Das Video inszeniert eine Form von internalisierter Disziplin, bei der kontrolliertes Essverhalten nicht mehr als Anstrengung wahrgenommen wird, sondern als selbstverständlicher Bestandteil des Alltags erscheint. Durch den humorvollen Ton und die Betonung von Leichtigkeit wird die zugrunde liegende Struktur der Kontrolle verdeckt. Gleichzeitig wird ein Ideal vermittelt, bei dem eine optimierte Ernährung nicht nur effektiv, sondern auch mühelos umsetzbar ist. Dadurch wird Disziplin entproblematisiert und als natürlicher Zustand stabilisiert.", "schlagwortRaw": "2= optimierte Diziplin", "typCodes": [2], "typPrimary": 2}, {"id": 29, "videoLink": null, "videoRef": 39, "metrics": {"views": null, "follower": null, "gespeichert": null, "likes": null}, "erstindruck": "minus 10 kg, binge eating issues", "zentraleBotschaft": "Das Video vermittelt, dass eine bewusste kontrollierte Ernährung  notwenidg sind um Gewicht zu verlieren, auch wenn Herausforderungen wie Binge eating bestehen.", "wasVermitteltWird": "Implizit wird eine sehr restriktive Ernährungsweise sichtbar, die in Spannung zu den geschilderten Problemen mit Binge Eating steht. Die gezeigten kleinen Portionsgrößen deuten auf eine starke Einschränkung hin, die gleichzeitig als kontrolliertes und bewusstes Verhalten dargestellt wird. Dadurch wird eine mögliche Verbindung zwischen restriktiver Ernährung und Kontrollverlust indirekt sichtbar, ohne jedoch explizit reflektiert zu werden.", "portionen": {"morgens": {"raw": "1", "values": [1.0], "label": "klein"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": "1", "values": [1.0], "label": "klein"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "3.1", "codes": [3, 1], "labels": ["ausgewogen", "proteinorientiert"]}, "restriktion": {"raw": "2", "code": 2, "max": 3, "label": "leichte Kontrolle (bewusst, nicht extrem)"}, "kontrolle": {"raw": "2", "code": 2, "max": 3, "label": "teilweise geplant"}, "disziplinNarrativ": {"raw": "2", "codes": [2], "labels": ["moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "2", "codes": [2], "labels": ["Ganzkörperdarstellung"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "2.3", "codes": [2, 3], "labels": ["Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "0", "codes": [], "labels": []}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "2", "code": 2, "max": 3, "label": "halb authentisch"}, "transkript": "Dann gibt’s Frühstück, heute gab es 2 Mandeln zum Frühstück. Ich liebe Mandeln einfach und da muss ich vorsichtig sein, weil ich die wirklich bingen könnte.", "interpretation": "Das Video macht eine ambivalente Form von Disziplin sichtbar, bei der starke Kontrolle und Kontrollverlust nebeneinander bestehen.", "schlagwortRaw": "4= retsriktive Disziplin", "typCodes": [4], "typPrimary": 4}, {"id": 30, "videoLink": null, "videoRef": 40, "metrics": {"views": "201.841", "follower": "309.502", "gespeichert": "1.830", "likes": "22.825"}, "erstindruck": "boring meals", "zentraleBotschaft": "Das Video vermittelt, dass eine konsequente und gleichbleibende Ernährung einfach umzusetzen ist und keine besondere Anstrengung erfordert.", "wasVermitteltWird": "Implizit wird eine stark kontrollierte und monotone Ernährungsweise normalisiert, bei der Variation zugunsten von Einfachheit und Kontrolle reduziert wird", "portionen": {"morgens": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack1": {"raw": null, "values": [], "label": "keine Angabe"}, "mittag": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack2": {"raw": null, "values": [], "label": "keine Angabe"}, "abend": {"raw": "2", "values": [2.0], "label": "mittel"}, "snack3": {"raw": "1", "values": [1.0], "label": "klein"}}, "ernaehrungsstruktur": {"raw": "3", "code": 3, "max": 4, "label": "drei Mahlzeiten + Snacks"}, "gesamtmenge": {"raw": "2", "code": 2, "max": 3, "label": "mittel"}, "ernaehrungsstil": {"raw": "1.3", "codes": [1, 3], "labels": ["proteinorientiert", "ausgewogen"]}, "restriktion": {"raw": "3", "code": 3, "max": 3, "label": "starke Einschränkung (sehr wenig, sehr clean)"}, "kontrolle": {"raw": "3", "code": 3, "max": 3, "label": "stark kontrolliert"}, "disziplinNarrativ": {"raw": "2", "codes": [2], "labels": ["moralisch aufgeladen"]}, "narrativRestriktion": {"raw": "1", "code": 1, "max": 3, "label": "konsistent"}, "koerperinszenierung": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Nahaufnahme einzelner Körperteile", "Ganzkörperdarstellung", "dynamische Pose"]}, "bauchDefinition": {"raw": "1", "code": 1, "max": 3, "label": "leicht definiert"}, "objektivierung": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["sexualisierte Pose", "Fokus auf Körperteile", "freizügige/sportbetonte Kleidung"]}, "fitnessKontext": {"raw": "1,2,3", "codes": [1, 2, 3], "labels": ["Fitnesszubehör sichtbar", "Training/Bewegung", "Bezug zu Leistung"]}, "narrativKoerper": {"raw": "1", "code": 1, "max": 3, "label": "passend"}, "inszenierungsgrad": {"raw": "1", "code": 1, "max": 3, "label": "stark inszeniert"}, "transkript": "Honestly my meals are just really boring !", "interpretation": "Disziplin erscheint hier nicht mehr als aktive Leistung, sondern als automatisierte Praxis, die so selbstverständlich geworden ist, dass sie kaum noch wahrgenommen wird. Dadurch wird ein Ideal vermittelt, in dem maximale Kontrolle mit minimalem Aufwand verbunden ist.", "schlagwortRaw": "2= optimierte verschleierte disziplin", "typCodes": [2], "typPrimary": 2}];
 
-/* ---------- Codebook definitions ---------- */
-const CODEBOOK = [
-  { title: "Portionsgröße (je Mahlzeit)", items: [
-    ["0,5","Getränk (z. B. Matcha, Cappuccino)"],
-    ["1","klein"], ["2","mittel"], ["3","groß"]
-  ]},
-  { title: "Ernährungsstruktur", items: [
-    ["1","drei Hauptmahlzeiten"], ["2","weniger als drei Hauptmahlzeiten"],
-    ["3","drei Mahlzeiten + Snacks"], ["4","mehr als drei kleine Mahlzeiten"]
-  ]},
-  { title: "Gesamtmenge (interpretiert)", items: [
-    ["1","gering"], ["2","mittel"], ["3","hoch"]
-  ]},
-  { title: "Ernährungsstil", items: [
-    ["1","proteinorientiert"], ["2","kohlenhydratreduziert"],
-    ["3","ausgewogen"], ["4","kalorienreich"]
-  ]},
-  { title: "Grad der Restriktion", items: [
-    ["1","keine erkennbare Einschränkung"], ["2","leichte Kontrolle (bewusst, nicht extrem)"],
-    ["3","starke Einschränkung (sehr wenig, sehr „clean“, kaum Genuss)"]
-  ]},
-  { title: "Grad der Kontrolle / Planung", items: [
-    ["1","spontan / locker"], ["2","teilweise geplant"], ["3","stark kontrolliert"]
-  ]},
-  { title: "Disziplin-Narrativ", items: [
-    ["1","wissenschaftlich legitimiert („gut für Körper / Makros“)"],
-    ["2","moralisch aufgeladen („clean eating“, „keine Cheats“)"],
-    ["3","leistungsorientiert („für Gains“, „für Performance“)"],
-    ["4","kein Disziplin-Narrativ"]
-  ]},
-  { title: "Verhältnis Narrativ – Restriktion", items: [
-    ["1","konsistent („clean eating“ + wenig Essen)"],
-    ["2","teilweise konsistent („ich esse intuitiv“ + extrem restriktiv)"],
-    ["3","widersprüchlich (gemischt / unklar)"]
-  ]},
-  { title: "Körperdarstellung – Inszenierung", items: [
-    ["1","Nahaufnahme einzelner Körperteile"], ["2","Ganzkörperdarstellung"],
-    ["3","dynamische Pose (angespannt / Bewegung)"], ["4","statisch"],
-    ["5","Vergleich (Vorher-Nachher etc.)"]
-  ]},
-  { title: "Bauch-Definition", items: [
-    ["1","leicht definiert"], ["2","klar definiert (Sixpack sichtbar)"], ["3","extrem definiert"]
-  ]},
-  { title: "Objektivierungselemente", items: [
-    ["1","sexualisierte Pose"], ["2","Fokus auf bestimmte Körperteile (z. B. Bauch, Po)"],
-    ["3","freizügige / sportbetonte Kleidung (Sport-BH, Crop Top)"]
-  ]},
-  { title: "Fitness-/Leistungskontext", items: [
-    ["1","Fitnesszubehör sichtbar (Hanteln, Gym etc.)"], ["2","Training, Bewegungskontext"],
-    ["3","Bezug zu Leistung (Workout, Progress etc.)"]
-  ]},
-  { title: "Verhältnis Narrativ – Körperdarstellung", items: [
-    ["1","passend"], ["2","neutral"], ["3","widersprüchlich"]
-  ]},
-  { title: "Grad der Inszenierung", items: [
-    ["1","stark inszeniert"], ["2","halb authentisch"], ["3","„authentisch“ dargestellt"]
-  ]},
-];
+const TYPE_META = {
+  0:{name:"Nicht eindeutig", key:"0"},
+  1:{name:"Wissenbasierte Disziplin", key:"1"},
+  2:{name:"Optimierte / verschleierte Disziplin", key:"2"},
+  3:{name:"Leistungsorientierte Disziplin", key:"3"},
+  4:{name:"Restriktive Disziplin", key:"4"},
+  5:{name:"Gegenfall: freieres Essverhalten", key:"5"}
+};
+const TYPE_ORDER = [1,2,3,4,5,0];
 
-function renderCodebook(){
-  const grid = document.getElementById('codebook-grid');
-  grid.innerHTML = CODEBOOK.map(c => `
-    <div class="cb-item">
-      <h4>${c.title}</h4>
-      <ul>${c.items.map(i=>`<li><b>${i[0]}</b><span>${i[1]}</span></li>`).join('')}</ul>
-    </div>`).join('');
-}
-renderCodebook();
-
-/* ---------- helpers ---------- */
-function extractCodes(val){
-  // pulls out all integer digits from messy multi-select strings like "1,2,3" "2 (Bauch),3" "1.2"
-  if(val === null || val === undefined) return [];
-  const s = String(val);
-  const matches = s.match(/\d/g);
-  return matches ? [...new Set(matches.map(Number))] : [];
-}
-function firstCode(val){
-  const c = extractCodes(val);
-  return c.length ? c[0] : null;
-}
-function portionVal(v){
-  if(v===null||v===undefined) return 0;
-  const n = parseFloat(String(v).replace(',','.'));
-  return isNaN(n) ? 0 : n;
+function esc(str){
+  if(str === null || str === undefined) return "";
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#39;");
 }
 
-/* ---------- Hero stat: high control share ---------- */
-(function(){
-  const total = DATA.length;
-  const high = DATA.filter(v => extractCodes(v.kontrolle).includes(3)).length;
-  document.getElementById('stat-restrictive').textContent = Math.round(high/total*100)+'%';
-})();
+function typeColorVar(t){ return `var(--type-${t})`; }
 
-/* ---------- Fingerprint visual ---------- */
-(function(){
-  const rowsEl = document.getElementById('fingerprint-rows');
-  const slots = ['p_morgens','p_snack1','p_mittag','p_snack2','p_abend','p_snack3'];
-  rowsEl.innerHTML = DATA.map(v=>{
-    const cells = slots.map(s=>{
-      const val = portionVal(v[s]);
-      const w = val===0 ? 4 : 8 + val*7;
-      const op = val===0 ? 0.12 : Math.min(0.35 + val*0.22, 1);
-      return `<div class="fp-cell" style="width:${w}px; opacity:${op}"></div>`;
-    }).join('');
-    return `<div class="fp-row" data-id="${v.id}">${cells}</div>`;
-  }).join('');
-  rowsEl.querySelectorAll('.fp-row').forEach(r=>{
-    r.addEventListener('click', ()=> openModal(parseInt(r.dataset.id)));
-  });
-})();
+function parseReach(str){
+  if(!str) return 0;
+  const s = String(str).toLowerCase();
+  const m = s.match(/(\d+(?:\.\d{3})*)(,(\d+))?/);
+  if(!m) return 0;
+  let intPart = m[1].replaceAll(".", "");
+  let decPart = m[3] || "";
+  let value = parseFloat(decPart ? `${intPart}.${decPart}` : intPart);
+  if(isNaN(value)) return 0;
+  if(/mio|million/.test(s)) value *= 1_000_000;
+  else if(/\btsd\b|tausend/.test(s)) value *= 1_000;
+  else if(/\d\s*k\b/.test(s)) value *= 1_000;
+  return value;
+}
+CASES.forEach(c => { c._reach = parseReach(c.metrics.views); });
 
-/* ---------- Charts ---------- */
-Chart.defaults.color = '#c9c3ab';
-Chart.defaults.font.family = "'IBM Plex Mono', monospace";
-Chart.defaults.font.size = 11;
-Chart.defaults.borderColor = 'rgba(237,231,214,0.1)';
+/* ---------- state ---------- */
+const state = {
+  query: "",
+  activeTypes: new Set(),
+  sort: "id"
+};
 
-function countCodes(field, labels){
-  const counts = new Array(labels.length).fill(0);
-  DATA.forEach(v=>{
-    extractCodes(v[field]).forEach(code=>{
-      if(code>=1 && code<=labels.length) counts[code-1]++;
-    });
-  });
+/* ---------- header tally ---------- */
+function renderTally(){
+  const counts = {};
+  TYPE_ORDER.forEach(t => counts[t] = 0);
+  CASES.forEach(c => { counts[c.typPrimary] = (counts[c.typPrimary]||0) + 1; });
+  const total = CASES.length;
+
+  const bar = document.getElementById("tallyBar");
+  bar.innerHTML = TYPE_ORDER.filter(t => counts[t] > 0).map(t => {
+    const pct = (counts[t] / total * 100).toFixed(2);
+    return `<div class="tally-segment" style="width:${pct}%; background:${typeColorVar(t)}" title="${esc(TYPE_META[t].name)}: ${counts[t]}"></div>`;
+  }).join("");
+
+  const legend = document.getElementById("tallyLegend");
+  legend.innerHTML = TYPE_ORDER.map(t => `
+    <li><span class="legend-dot" style="background:${typeColorVar(t)}"></span>${esc(TYPE_META[t].name)} <strong>${counts[t]}</strong></li>
+  `).join("");
+
   return counts;
 }
+const typeCounts = renderTally();
 
-function barChart(id, labels, data, color){
-  new Chart(document.getElementById(id), {
-    type:'bar',
-    data:{ labels, datasets:[{ data, backgroundColor: color, borderRadius:3, maxBarThickness:38 }]},
-    options:{
-      plugins:{ legend:{display:false} },
-      scales:{
-        y:{ beginAtZero:true, ticks:{ stepSize:1 }, grid:{ color:'rgba(237,231,214,0.08)'} },
-        x:{ grid:{ display:false } }
+/* ---------- sidebar: type chips ---------- */
+function renderTypeChips(){
+  const wrap = document.getElementById("typeChips");
+  wrap.innerHTML = TYPE_ORDER.map(t => `
+    <button class="chip" type="button" data-type="${t}" aria-pressed="false">
+      <span class="swatch" style="background:${typeColorVar(t)}"></span>
+      ${esc(TYPE_META[t].name)}
+      <span class="chip-count">${typeCounts[t]||0}</span>
+    </button>
+  `).join("");
+  wrap.querySelectorAll(".chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const t = Number(chip.dataset.type);
+      if(state.activeTypes.has(t)){
+        state.activeTypes.delete(t);
+        chip.setAttribute("aria-pressed", "false");
+      } else {
+        state.activeTypes.add(t);
+        chip.setAttribute("aria-pressed", "true");
       }
-    }
+      renderGrid();
+    });
   });
 }
-function donutChart(id, labels, data, colors){
-  new Chart(document.getElementById(id), {
-    type:'doughnut',
-    data:{ labels, datasets:[{ data, backgroundColor: colors, borderColor:'#20231b', borderWidth:2 }]},
-    options:{ plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, padding:10, font:{size:10} } } }, cutout:'62%' }
-  });
+renderTypeChips();
+
+/* ---------- search / sort controls ---------- */
+document.getElementById("searchInput").addEventListener("input", e => {
+  state.query = e.target.value.trim().toLowerCase();
+  renderGrid();
+});
+document.getElementById("sortSelect").addEventListener("change", e => {
+  state.sort = e.target.value;
+  renderGrid();
+});
+document.getElementById("resetBtn").addEventListener("click", () => {
+  state.query = "";
+  state.activeTypes.clear();
+  state.sort = "id";
+  document.getElementById("searchInput").value = "";
+  document.getElementById("sortSelect").value = "id";
+  document.querySelectorAll("#typeChips .chip").forEach(c => c.setAttribute("aria-pressed","false"));
+  renderGrid();
+});
+
+/* ---------- filtering / sorting ---------- */
+function searchableText(c){
+  return [
+    c.erstindruck, c.zentraleBotschaft, c.wasVermitteltWird,
+    c.transkript, c.interpretation, c.schlagwortRaw
+  ].join(" \n ").toLowerCase();
 }
 
-const PALETTE = ['#8C9B76','#C1662E','#D9A441','#6d7a5c','#9c5528','#b58332'];
+function getFiltered(){
+  let list = CASES.filter(c => {
+    if(state.activeTypes.size && !c.typCodes.some(t => state.activeTypes.has(t))) return false;
+    if(state.query && !searchableText(c).includes(state.query)) return false;
+    return true;
+  });
 
-barChart('chart-restriktion', ['1 keine','2 leicht','3 stark'], countCodes('restriktion', new Array(3)), PALETTE[0]);
-barChart('chart-kontrolle', ['1 spontan','2 teilweise','3 stark'], countCodes('kontrolle', new Array(3)), PALETTE[1]);
-donutChart('chart-stil', ['1 protein','2 kh-reduziert','3 ausgewogen','4 kalorienreich'], countCodes('stil', new Array(4)), PALETTE);
-donutChart('chart-struktur', ['1 3 Hauptmahlz.','2 <3 Hauptmahlz.','3 3 Mahlz.+Snacks','4 >3 kl. Mahlz.'], countCodes('struktur', new Array(4)), PALETTE);
-barChart('chart-disziplin', ['1 wissensch.','2 moralisch','3 leistung','4 kein Narrativ'], countCodes('disziplin_narrativ', new Array(4)), PALETTE[2]);
-barChart('chart-inszenierung', ['1 stark insz.','2 halb auth.','3 authentisch'], countCodes('inszenierung_grad', new Array(3)), PALETTE[0]);
+  const byCodeDesc = (key) => (a,b) => {
+    const av = a[key].code, bv = b[key].code;
+    if(av === null && bv === null) return a.id - b.id;
+    if(av === null) return 1;
+    if(bv === null) return -1;
+    return bv - av;
+  };
+  const byCodeAsc = (key) => (a,b) => {
+    const av = a[key].code, bv = b[key].code;
+    if(av === null && bv === null) return a.id - b.id;
+    if(av === null) return 1;
+    if(bv === null) return -1;
+    return av - bv;
+  };
 
-/* ---------- Archive grid ---------- */
-const RESTR_LABELS = {1:'keine Restriktion', 2:'leichte Restriktion', 3:'starke Restriktion'};
-const RESTR_CLASS = {1:'var(--sage)', 2:'var(--mustard)', 3:'var(--clay)'};
+  if(state.sort === "id") list.sort((a,b) => a.id - b.id);
+  else if(state.sort === "restriktion") list.sort(byCodeDesc("restriktion"));
+  else if(state.sort === "inszenierung") list.sort(byCodeAsc("inszenierungsgrad"));
+  else if(state.sort === "reach") list.sort((a,b) => b._reach - a._reach);
 
-function cardTitle(v){
-  if(v.erster_eindruck) return v.erster_eindruck;
-  if(v.botschaft) return v.botschaft.slice(0,60);
-  return 'Video Nr. '+v.videonr;
+  return list;
 }
 
-function renderArchive(filter, query){
-  const grid = document.getElementById('archive-grid');
-  const q = (query||'').toLowerCase().trim();
-  const items = DATA.filter(v=>{
-    const codes = extractCodes(v.restriktion);
-    const passFilter = filter==='all' ? true : codes.includes(parseInt(filter));
-    if(!passFilter) return false;
-    if(!q) return true;
-    const hay = [v.erster_eindruck, v.botschaft, v.vermittelt, v.zitat, v.interpretation, v.videonr]
-      .filter(Boolean).join(' ').toLowerCase();
-    return hay.includes(q);
-  });
-  if(items.length===0){
-    grid.innerHTML = `<p style="color:var(--cream-dim); grid-column:1/-1;">Keine Treffer für diese Auswahl.</p>`;
-    return;
+/* ---------- small render helpers ---------- */
+function segmentsHtml(code, max){
+  let html = "";
+  for(let i=1;i<=max;i++){
+    html += `<div class="segment ${code && i<=code ? "filled":""}"></div>`;
   }
-  const slots = ['p_morgens','p_snack1','p_mittag','p_snack2','p_abend','p_snack3'];
-  grid.innerHTML = items.map(v=>{
-    const restCode = firstCode(v.restriktion);
-    const portions = slots.map(s=>{
-      const val = portionVal(v[s]);
-      const h = val===0? 2 : 3 + val*4;
-      return `<i style="height:${h}px; opacity:${val===0?0.15:0.4+val*0.18}"></i>`;
-    }).join('');
-    const stilMap = {1:'proteinorientiert',2:'kh-reduziert',3:'ausgewogen',4:'kalorienreich'};
-    const stilCode = firstCode(v.stil);
-    return `
-    <div class="case-card" data-id="${v.id}" style="border-top-color:${RESTR_CLASS[restCode]||'var(--clay)'}">
-      <div class="cc-top">
-        <span class="cc-id mono">Fall ${String(v.videonr??v.id).padStart(2,'0')}</span>
-        ${restCode? `<span class="cc-rest">${RESTR_LABELS[restCode]||''}</span>` : ''}
-      </div>
-      <h3>${cardTitle(v)}</h3>
-      <p class="cc-msg">${v.botschaft || v.vermittelt || 'Keine Botschaft erfasst.'}</p>
-      <div class="cc-portions">${portions}</div>
-      <div class="cc-tags">
-        ${stilCode? `<span>${stilMap[stilCode]}</span>`:''}
-        ${v.videolink? `<span>hat link</span>`:''}
+  return html;
+}
+
+function tagsHtml(labels){
+  if(!labels || !labels.length) return `<div class="tags"><span class="tag muted">keine Angabe</span></div>`;
+  return `<div class="tags">${labels.map(l => `<span class="tag">${esc(l)}</span>`).join("")}</div>`;
+}
+
+function barRow(title, field){
+  const code = field.code, max = field.max;
+  let segs = "";
+  for(let i=1;i<=max;i++){
+    segs += `<div class="bar-seg ${code && i<=code ? "filled":""}"></div>`;
+  }
+  return `
+    <div class="bar-row">
+      <span class="bar-title">${esc(title)}</span>
+      <div>
+        <div class="bar-track">${segs}</div>
+        <div class="bar-caption">${esc(field.label)}</div>
       </div>
     </div>`;
-  }).join('');
-  grid.querySelectorAll('.case-card').forEach(c=>{
-    c.addEventListener('click', ()=> openModal(parseInt(c.dataset.id)));
+}
+
+function metricLine(metrics){
+  const parts = [];
+  if(metrics.views) parts.push(`<span>Views <b>${esc(metrics.views)}</b></span>`);
+  if(metrics.follower) parts.push(`<span>Follower <b>${esc(metrics.follower)}</b></span>`);
+  if(metrics.likes) parts.push(`<span>Likes <b>${esc(metrics.likes)}</b></span>`);
+  if(metrics.gespeichert) parts.push(`<span>Gespeichert <b>${esc(metrics.gespeichert)}</b></span>`);
+  return parts.length ? parts.join("") : `<span>keine Metriken erfasst</span>`;
+}
+
+/* ---------- card rendering ---------- */
+function cardHtml(c){
+  const primaryName = TYPE_META[c.typPrimary].name;
+  return `
+    <article class="case-card" data-id="${c.id}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Fall ${c.id} öffnen">
+      <div class="card-top">
+        <div class="case-number"><span>Fall</span> ${String(c.id).padStart(2,"0")}</div>
+        <span class="type-badge" style="background:${typeColorVar(c.typPrimary)}">${esc(primaryName)}</span>
+      </div>
+      <div class="card-metrics">${metricLine(c.metrics)}</div>
+      ${c.erstindruck ? `<blockquote class="first-impression">„${esc(c.erstindruck)}“</blockquote>` : `<blockquote class="first-impression">keine Angabe</blockquote>`}
+      <div class="readout">
+        <div class="readout-row"><span class="readout-label">Restriktion</span><div class="segments">${segmentsHtml(c.restriktion.code, c.restriktion.max)}</div></div>
+        <div class="readout-row"><span class="readout-label">Kontrolle</span><div class="segments">${segmentsHtml(c.kontrolle.code, c.kontrolle.max)}</div></div>
+        <div class="readout-row"><span class="readout-label">Inszenierung</span><div class="segments">${segmentsHtml(c.inszenierungsgrad.code, c.inszenierungsgrad.max)}</div></div>
+        <div class="readout-row"><span class="readout-label">Bauch</span><div class="segments">${segmentsHtml(c.bauchDefinition.code, c.bauchDefinition.max)}</div></div>
+      </div>
+    </article>`;
+}
+
+function renderGrid(){
+  const list = getFiltered();
+  const grid = document.getElementById("caseGrid");
+  document.getElementById("resultCount").textContent = `${list.length} von ${CASES.length} Fällen`;
+  if(!list.length){
+    grid.innerHTML = `<div class="empty-state">Keine Fälle für diese Filterkombination gefunden.</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(cardHtml).join("");
+  grid.querySelectorAll(".case-card").forEach(card => {
+    const id = Number(card.dataset.id);
+    card.addEventListener("click", () => openModal(id));
+    card.addEventListener("keydown", e => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        openModal(id);
+      }
+    });
   });
 }
-renderArchive('all','');
 
-document.querySelectorAll('.filter-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    renderArchive(btn.dataset.filter, document.getElementById('search-input').value);
-  });
-});
-document.getElementById('search-input').addEventListener('input', (e)=>{
-  const active = document.querySelector('.filter-btn.active');
-  renderArchive(active? active.dataset.filter : 'all', e.target.value);
-});
+/* ---------- modal ---------- */
+const overlay = document.getElementById("modalOverlay");
+const modalContent = document.getElementById("modalContent");
+let lastFocused = null;
 
-/* ---------- Modal ---------- */
-const CODE_FIELDS = [
-  ['struktur','Ernährungsstruktur'],
-  ['gesamtmenge','Gesamtmenge (interpretiert)'],
-  ['stil','Ernährungsstil'],
-  ['restriktion','Grad der Restriktion'],
-  ['kontrolle','Grad der Kontrolle / Planung'],
-  ['disziplin_narrativ','Disziplin-Narrativ'],
-  ['verh_narrativ_restriktion','Verhältnis Narrativ–Restriktion'],
-  ['koerper_inszenierung','Körperdarstellung – Inszenierung'],
-  ['bauch_definition','Bauch-Definition'],
-  ['objektivierung','Objektivierungselemente'],
-  ['fitness_kontext','Fitness-/Leistungskontext'],
-  ['verh_narrativ_koerper','Verhältnis Narrativ–Körperdarstellung'],
-  ['inszenierung_grad','Grad der Inszenierung'],
-];
+function portionTags(p){
+  const items = [
+    ["Morgens", p.morgens], ["Snack", p.snack1], ["Mittag", p.mittag],
+    ["Snack", p.snack2], ["Abend", p.abend], ["Snack", p.snack3]
+  ];
+  return `<div class="tags">${items.map(([name,val]) =>
+    `<span class="tag">${esc(name)}: ${esc(val.label)}</span>`
+  ).join("")}</div>`;
+}
 
-function fmt(val){
-  if(val===null||val===undefined||val==='') return '—';
-  return String(val);
+function modalHtml(c){
+  const primaryName = TYPE_META[c.typPrimary].name;
+  const videoBtn = c.videoLink
+    ? `<a class="video-btn" href="${esc(c.videoLink)}" target="_blank" rel="noopener noreferrer">Video auf TikTok öffnen ↗</a>`
+    : `<span class="video-btn disabled">kein Videolink verfügbar</span>`;
+
+  return `
+    <div class="modal-head">
+      <div>
+        <div class="case-number" id="modalTitle"><span>Fall</span> ${String(c.id).padStart(2,"0")}</div>
+      </div>
+      <div class="modal-meta">
+        <span class="type-badge" style="background:${typeColorVar(c.typPrimary)}">${esc(primaryName)}</span>
+        ${videoBtn}
+      </div>
+    </div>
+    <div class="modal-metrics">${metricLine(c.metrics)}</div>
+
+    <div class="section">
+      <h3>Botschaft</h3>
+      <div class="kv">
+        <div class="kv-item">
+          <div class="kv-label">Erster Eindruck</div>
+          <div class="kv-value">${c.erstindruck ? `<blockquote>„${esc(c.erstindruck)}“</blockquote>` : "keine Angabe"}</div>
+        </div>
+        <div class="kv-item">
+          <div class="kv-label">Zentrale Botschaft</div>
+          <div class="kv-value">${esc(c.zentraleBotschaft) || "keine Angabe"}</div>
+        </div>
+        <div class="kv-item">
+          <div class="kv-label">Was vermittelt wird</div>
+          <div class="kv-value">${esc(c.wasVermitteltWird) || "keine Angabe"}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Ernährung</h3>
+      <div class="kv-item" style="margin-bottom:1rem;">
+        <div class="kv-label">Portionsgrößen</div>
+        ${portionTags(c.portionen)}
+      </div>
+      ${barRow("Ernährungsstruktur", c.ernaehrungsstruktur)}
+      ${barRow("Gesamtmenge", c.gesamtmenge)}
+      <div class="kv-item" style="margin-top:.9rem;">
+        <div class="kv-label">Ernährungsstil</div>
+        ${tagsHtml(c.ernaehrungsstil.labels)}
+      </div>
+      <div style="margin-top:.9rem;">
+        ${barRow("Grad der Restriktion", c.restriktion)}
+        ${barRow("Kontrolle / Planung", c.kontrolle)}
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Disziplin-Narrativ</h3>
+      <div class="kv-item" style="margin-bottom:.9rem;">
+        <div class="kv-label">Disziplin-Narrativ</div>
+        ${tagsHtml(c.disziplinNarrativ.labels)}
+      </div>
+      ${barRow("Narrativ ↔ Restriktion", c.narrativRestriktion)}
+    </div>
+
+    <div class="section">
+      <h3>Körperdarstellung</h3>
+      <div class="kv-item" style="margin-bottom:.9rem;">
+        <div class="kv-label">Körperinszenierung</div>
+        ${tagsHtml(c.koerperinszenierung.labels)}
+      </div>
+      ${barRow("Bauch-Definition", c.bauchDefinition)}
+      <div class="kv-item" style="margin:.9rem 0;">
+        <div class="kv-label">Objektivierung</div>
+        ${tagsHtml(c.objektivierung.labels)}
+      </div>
+      <div class="kv-item" style="margin-bottom:.9rem;">
+        <div class="kv-label">Fitness- / Leistungskontext</div>
+        ${tagsHtml(c.fitnessKontext.labels)}
+      </div>
+      ${barRow("Narrativ ↔ Körper", c.narrativKoerper)}
+      ${barRow("Grad der Inszenierung", c.inszenierungsgrad)}
+    </div>
+
+    <div class="section">
+      <h3>Transkript</h3>
+      <div class="transcript-box">${c.transkript ? esc(c.transkript) : "keine Angabe"}</div>
+    </div>
+
+    <div class="section">
+      <h3>Interpretation</h3>
+      <div class="interpretation-box">${c.interpretation ? esc(c.interpretation) : "keine Angabe"}</div>
+    </div>
+
+    <div class="section">
+      <h3>Körpernarrativ / Schlagwort (Rohtext)</h3>
+      <div class="raw-box">${c.schlagwortRaw ? esc(c.schlagwortRaw) : "keine Angabe"}</div>
+    </div>
+  `;
 }
 
 function openModal(id){
-  const v = DATA.find(x=>x.id===id);
-  if(!v) return;
-  const slots = [['p_morgens','Morgens'],['p_snack1','Snack'],['p_mittag','Mittag'],['p_snack2','Snack'],['p_abend','Abend'],['p_snack3','Snack']];
-  const portionsHtml = slots.map(([key,label])=>{
-    const val = portionVal(v[key]);
-    const h = val===0? 4 : 10 + val*10;
-    return `<div class="seg"><div class="bar" style="height:${h}px"></div><span class="lbl">${label}<br>${fmt(v[key])}</span></div>`;
-  }).join('');
-
-  const codesHtml = CODE_FIELDS.map(([key,label])=>
-    `<div><span class="k">${label}</span><span class="v">${fmt(v[key])}</span></div>`
-  ).join('');
-
-  document.getElementById('modal-content').innerHTML = `
-    <button class="modal-close" id="modal-close-btn">&times;</button>
-    <div class="m-eyebrow">Fall ${String(v.videonr??v.id).padStart(2,'0')} ${v.views? '· '+fmt(v.views):''}</div>
-    <h2>${cardTitle(v)}</h2>
-    ${v.videolink? `<a class="m-link" href="${v.videolink}" target="_blank" rel="noopener">${v.videolink} ↗</a>`:''}
-
-    <div class="m-block">
-      <h5>Zentrale Botschaft</h5>
-      <p>${fmt(v.botschaft)}</p>
-    </div>
-    <div class="m-block">
-      <h5>Was tatsächlich vermittelt wird</h5>
-      <p>${fmt(v.vermittelt)}</p>
-    </div>
-    ${v.zitat? `<div class="m-block"><h5>Zitat aus dem Video</h5><p class="m-quote">„${v.zitat}“</p></div>` : ''}
-    <div class="m-block">
-      <h5>Interpretation</h5>
-      <p>${fmt(v.interpretation)}</p>
-    </div>
-
-    <div class="m-block">
-      <h5>Portionsgröße je Mahlzeit</h5>
-      <div class="m-portions">${portionsHtml}</div>
-    </div>
-
-    <div class="m-block">
-      <h5>Alle erhobenen Codes</h5>
-      <div class="m-codes">${codesHtml}</div>
-    </div>
-
-    <div class="m-block">
-      <h5>Reichweitendaten</h5>
-      <div class="m-codes">
-        <div><span class="k">Views</span><span class="v">${fmt(v.views)}</span></div>
-        <div><span class="k">Follower</span><span class="v">${fmt(v.follower)}</span></div>
-        <div><span class="k">Gespeichert</span><span class="v">${fmt(v.gespeichert)}</span></div>
-        <div><span class="k">Likes</span><span class="v">${fmt(v.likes)}</span></div>
-      </div>
-    </div>
-  `;
-  document.getElementById('modal-overlay').classList.add('open');
-  document.getElementById('modal-close-btn').addEventListener('click', closeModal);
-  document.body.style.overflow = 'hidden';
+  const c = CASES.find(x => x.id === id);
+  if(!c) return;
+  lastFocused = document.activeElement;
+  modalContent.innerHTML = modalHtml(c);
+  overlay.hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("modalClose").focus();
 }
+
 function closeModal(){
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
+  overlay.hidden = true;
+  document.body.style.overflow = "";
+  if(lastFocused) lastFocused.focus();
 }
-document.getElementById('modal-overlay').addEventListener('click', (e)=>{
-  if(e.target.id==='modal-overlay') closeModal();
+
+document.getElementById("modalClose").addEventListener("click", closeModal);
+overlay.addEventListener("click", e => {
+  if(e.target === overlay) closeModal();
 });
-document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && !overlay.hidden) closeModal();
+});
+
+/* ---------- init ---------- */
+renderGrid();
 </script>
 </body>
 </html>
